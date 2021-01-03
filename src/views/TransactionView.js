@@ -132,6 +132,7 @@ const TransactionView = () => {
   const onDelete = (id) => {
     contactService.deleteExpance(contact, id);
     setContact(contactService.findById(contact.id));
+    setTotal(getTotal());
   };
   const onEdit = (id) => {
     let currTxn = findTransactionById(id);
@@ -156,7 +157,7 @@ const TransactionView = () => {
                 <ListItem
                   style={{ width: '85%' }}
                   component={RouterLink}
-                  to='/'>
+                  to='/hisaab'>
                   <ListItemAvatar>
                     <Avatar
                       alt={contact.name}
