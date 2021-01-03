@@ -1,71 +1,61 @@
-# Getting Started with Create React App
+# [Hisaab](https://github.com/pol-alok/hisaab) React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project used to manage your expense with your friends.
 
-## Available Scripts
+## About App
 
-In the project directory, you can run:
+First of all It is web application (Only) called [Hisaab](https://github.com/pol-alok/hisaab).
 
-### `npm start`
+Where you can manage your expense.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Create new Contact without phone number.
 
-### `npm test`
+- You can search people by their **_name_**.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- You can Create, Edit And Update expenses very easly.
 
-### `npm run build`
+## Tools & Technologies used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I have used list of below tools and technologies.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Tools
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Visual Studio Code (Code Editor)
 
-### `npm run eject`
+### Technologies
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- JavaScript
+- Reactjs
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Tutorial
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Home Page
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Here you will see a button on the bottom of the screen to Create New Contact.
+- when you create any contact then you can click on the card to add expense.
+- You can search the contact by their names.
+- You can delete contact by clicking on delete icon.
 
-## Learn More
+![screenshot](release/home_page.png 'home page screenshot')
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Expense Page
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Here you will see two buttons on the bottom of the screen that Says `Give` & `Take`.
+- Here you can edit or delete expense.
+- And To Go back click on the Name of the person.
 
-### Code Splitting
+![screenshot](release/expense_page.png 'expense page screenshot')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/pol-alok/hisaab/blob/master/LICENSE.md)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contact
 
-### Making a Progressive Web App
+If you'd like to provide any feedback, my e-mail is on my GitHub profile. You can also use the contact form on [my website](https://pol-alok.github.io).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Author
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-"# hisaab" 
+- **Ravikant Pal** - _Other work_ - [portfolio](https://pol-alok.github.io)
