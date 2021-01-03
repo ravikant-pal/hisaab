@@ -30,7 +30,7 @@ const AddExpence = (props) => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Please, specify the name of the item with their expaince.
+          Please, specify the name of the item with their expense.
         </DialogContentText>
         <Grid container spacing={2}>
           <Grid item md={6}>

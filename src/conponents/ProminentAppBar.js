@@ -40,7 +40,7 @@ const ProminentAppBar = () => {
                 noWrap>
                 Hisaab
                 <Typography variant='subtitle2' noWrap component='div'>
-                  Manage your expance with your friends.
+                  Manage your expenses with your friends.
                 </Typography>
               </Typography>
             </Button>
