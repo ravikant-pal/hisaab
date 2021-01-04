@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,6 +19,8 @@ const AddExpence = (props) => {
     setValue,
     handleSaveItem,
   } = props;
+
+  const [errorText, setErrorText] = useState('');
 
   return (
     <Dialog
@@ -49,7 +51,13 @@ const AddExpence = (props) => {
               label='Value'
               fullWidth
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                if (/^\d+$/.test(e.target.value)) setErrorText('');
+                else setErrorText('Incorrect entry.');
+                setValue(e.target.value);
+              }}
+              error={errorText.length === 0 ? false : true}
+              helperText={errorText}
             />
           </Grid>
         </Grid>
@@ -58,7 +66,9 @@ const AddExpence = (props) => {
         <Button onClick={handleClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={handleSaveItem} color='primary'>
+        <Button
+          onClick={errorText === '' ? handleSaveItem : () => false}
+          color='primary'>
           Save
         </Button>
       </DialogActions>

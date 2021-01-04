@@ -26,8 +26,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     flexGrow: 1,
     spacing: 0,
-    alignItems: 'center',
-    minHeight: '100vh',
   },
   control: {
     padding: theme.spacing(2),
@@ -94,7 +92,9 @@ const AppView = () => {
       setRecords(
         contactService
           .getAllContacts()
-          .filter((cnt) => cnt.name.toLowerCase().includes(target.value)),
+          .filter((cnt) =>
+            cnt.name.toLowerCase().includes(target.value.toLowerCase()),
+          ),
       );
     } else {
       setRecords(contactService.getAllContacts());
