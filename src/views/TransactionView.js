@@ -62,6 +62,8 @@ const TransactionView = () => {
   const [openTake, setOpenTake] = useState(false);
   const [itemName, setItemName] = useState('');
   const [value, setValue] = useState(0);
+  const [nameErrorText, setNameErrorText] = useState('');
+  const [valueErrorText, setValueErrorText] = useState('');
   const [contact, setContact] = useState(contactService.findById(id));
   const getTotal = () => {
     return contact.transactions
@@ -80,10 +82,18 @@ const TransactionView = () => {
 
   const handleCloseGive = () => {
     setOpenGive(false);
+    setValue(0);
+    setItemName('');
+    setNameErrorText('');
+    setValueErrorText('');
   };
 
   const handleCloseTake = () => {
     setOpenTake(false);
+    setValue(0);
+    setItemName('');
+    setNameErrorText('');
+    setValueErrorText('');
   };
 
   const handleSaveItemGive = () => {
@@ -157,10 +167,7 @@ const TransactionView = () => {
                   component={RouterLink}
                   to='/hisaab'>
                   <ListItemAvatar>
-                    <Avatar
-                      alt={contact.name}
-                      src='/static/images/avatar/1.jpg'
-                    />
+                    <Avatar alt={contact.name} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={
@@ -226,6 +233,10 @@ const TransactionView = () => {
               setItemName={setItemName}
               value={value}
               setValue={setValue}
+              nameErrorText={nameErrorText}
+              setNameErrorText={setNameErrorText}
+              valueErrorText={valueErrorText}
+              setValueErrorText={setValueErrorText}
               handleSaveItem={handleSaveItemGive}
             />
             <AddExpense
@@ -236,6 +247,10 @@ const TransactionView = () => {
               setItemName={setItemName}
               value={value}
               setValue={setValue}
+              nameErrorText={nameErrorText}
+              setNameErrorText={setNameErrorText}
+              valueErrorText={valueErrorText}
+              setValueErrorText={setValueErrorText}
               handleSaveItem={handleSaveItemTake}
             />
           </Grid>

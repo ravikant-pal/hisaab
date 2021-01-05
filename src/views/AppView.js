@@ -53,6 +53,7 @@ const AppView = () => {
 
   const [open, setOpen] = useState(false);
   const [contactName, setContactName] = useState('');
+  const [errorText, setErrorText] = useState('');
   const [records, setRecords] = useState(contactService.getAllContacts());
 
   const handleOpen = () => {
@@ -61,6 +62,8 @@ const AppView = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setContactName('');
+    setErrorText('');
   };
 
   const handleSaveContact = () => {
@@ -169,6 +172,8 @@ const AppView = () => {
               handleClose={handleClose}
               contactName={contactName}
               setContactName={setContactName}
+              errorText={errorText}
+              setErrorText={setErrorText}
               handleSaveContact={handleSaveContact}
             />
           </Grid>

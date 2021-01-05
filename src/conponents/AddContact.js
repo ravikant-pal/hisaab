@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +13,8 @@ const Addcontact = (props) => {
     handleClose,
     contactName,
     setContactName,
+    errorText,
+    setErrorText,
     handleSaveContact,
   } = props;
 
@@ -34,14 +36,26 @@ const Addcontact = (props) => {
           label='Person Name'
           fullWidth
           value={contactName}
-          onChange={(e) => setContactName(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value !== '') setErrorText('');
+            else setErrorText('This field is required!');
+            setContactName(e.target.value);
+          }}
+          error={errorText.length === 0 ? false : true}
+          helperText={errorText}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color='primary'>
           Cancel
         </Button>
-        <Button onClick={handleSaveContact} color='primary'>
+        <Button
+          onClick={
+            errorText === '' && contactName !== ''
+              ? handleSaveContact
+              : () => setErrorText('This field is required!')
+          }
+          color='primary'>
           Save
         </Button>
       </DialogActions>

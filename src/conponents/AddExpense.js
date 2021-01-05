@@ -15,12 +15,20 @@ const AddExpence = (props) => {
     handleClose,
     itemName,
     setItemName,
+    nameErrorText,
+    setNameErrorText,
     value,
     setValue,
+    valueErrorText,
+    setValueErrorText,
     handleSaveItem,
   } = props;
 
-  const [errorText, setErrorText] = useState('');
+  const vaidate = () => {
+    if (itemName === '') setNameErrorText('This field is required!');
+    if (!value) setValueErrorText('Incorrect entry.');
+    return false;
+  };
 
   return (
     <Dialog
@@ -42,7 +50,13 @@ const AddExpence = (props) => {
               label='Item Name'
               fullWidth
               value={itemName}
-              onChange={(e) => setItemName(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value !== '') setNameErrorText('');
+                else setNameErrorText('This field is required!');
+                setItemName(e.target.value);
+              }}
+              error={nameErrorText.length === 0 ? false : true}
+              helperText={nameErrorText}
             />
           </Grid>
           <Grid item md={6}>
@@ -52,12 +66,13 @@ const AddExpence = (props) => {
               fullWidth
               value={value}
               onChange={(e) => {
-                if (/^\d+$/.test(e.target.value)) setErrorText('');
-                else setErrorText('Incorrect entry.');
+                if (e.target.value !== '0' && /^\d+$/.test(e.target.value))
+                  setValueErrorText('');
+                else setValueErrorText('Incorrect entry.');
                 setValue(e.target.value);
               }}
-              error={errorText.length === 0 ? false : true}
-              helperText={errorText}
+              error={valueErrorText.length === 0 ? false : true}
+              helperText={valueErrorText}
             />
           </Grid>
         </Grid>
@@ -67,7 +82,14 @@ const AddExpence = (props) => {
           Cancel
         </Button>
         <Button
-          onClick={errorText === '' ? handleSaveItem : () => false}
+          onClick={
+            nameErrorText === '' &&
+            valueErrorText === '' &&
+            itemName !== '' &&
+            value
+              ? handleSaveItem
+              : vaidate
+          }
           color='primary'>
           Save
         </Button>
