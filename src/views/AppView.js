@@ -73,6 +73,12 @@ const AppView = () => {
     setRecords(contactService.getAllContacts());
   };
 
+  const isContactExists = (name) => {
+   return  records.some(cnt => cnt.name.toLowerCase() === name.toLowerCase());
+  }
+
+
+
   const onDelete = (id) => {
     contactService.deleteContact(id);
     setRecords(contactService.getAllContacts());
@@ -174,6 +180,7 @@ const AppView = () => {
               setContactName={setContactName}
               errorText={errorText}
               setErrorText={setErrorText}
+              isContactExists={isContactExists}
               handleSaveContact={handleSaveContact}
             />
           </Grid>
