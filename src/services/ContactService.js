@@ -1,7 +1,5 @@
-const KEYS = {
-  contacts: 'contacts',
-  contactId: 'contactId',
-};
+import KEYS from "./keys";
+
 export function buildContact(name) {
   return {
     id: 0,
@@ -21,18 +19,6 @@ export function insertContact(data) {
 export function deleteContact(id) {
   let contacts = getAllContacts();
   contacts = contacts.filter((cnt) => cnt.id != id);
-  localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
-}
-
-export function deleteExpance(contact, txnId) {
-  contact.transactions = contact.transactions.filter((txn) => txn.id != txnId);
-  addExpance(contact);
-}
-
-export function addExpance(data) {
-  let contacts = getAllContacts();
-  let recordIndex = contacts.findIndex((cnt) => cnt.id == data.id);
-  contacts[recordIndex] = { ...data };
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 

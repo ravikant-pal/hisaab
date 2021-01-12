@@ -57,7 +57,7 @@ const ContactCard = (props) => {
     lable = 'neither';
   }
 
-  const to = '/hisaab/contact/' + contact.id;
+  const to = '/hisaab/contact/' + contact.id+'?q=12';
 
   return (
     <div className={classes.root}>

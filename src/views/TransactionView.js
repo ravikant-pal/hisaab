@@ -18,6 +18,7 @@ import TransactionCard from '../conponents/TransactionCard';
 import ProminentAppBar from '../conponents/ProminentAppBar';
 import Page from '../conponents/Page';
 import * as contactService from '../services/ContactService';
+import * as transactionService from "../services/TransactionService";
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 
@@ -109,7 +110,7 @@ const TransactionView = () => {
     if (!txnId) {
       contact.transactions.push(item);
     }
-    contactService.addExpance(contact);
+    transactionService.addExpanceInContact(contact);
     setTotal(getTotal());
     setOpenGive(false);
     setItemName('');
@@ -130,7 +131,7 @@ const TransactionView = () => {
     if (!txnId) {
       contact.transactions.push(item);
     }
-    contactService.addExpance(contact);
+    transactionService.addExpanceInContact(contact);
     setTotal(getTotal());
     setOpenTake(false);
     setItemName('');
@@ -138,7 +139,7 @@ const TransactionView = () => {
     setTxnId(0);
   };
   const onDelete = (id) => {
-    contactService.deleteExpance(contact, id);
+    transactionService.deleteExpanceOfContact(contact, id);
     setContact(contactService.findById(contact.id));
     setTotal(getTotal());
   };

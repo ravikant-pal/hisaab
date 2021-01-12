@@ -47,7 +47,7 @@ const ContactCard = (props) => {
       'Oct',
       'Nov',
       'Dec',
-    ][today.getDate()];
+    ][today.getMonth()];
     let dd = String(today.getDate()).padStart(2, '0');
     let yyyy = today.getFullYear();
     today = day + ', ' + month + ' ' + dd + ' ' + yyyy;
