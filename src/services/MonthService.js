@@ -3,14 +3,14 @@ import KEYS from "./keys";
 function initialMonthData() {
     return [
         {
-            id: 0,
-            mname: 'January',
+            id: 1,
+            name: 'January '+ (new Date()).getFullYear(),
             transactionId: 0,
             transactions: [],
         },
         {
-            id: 1,
-            mname: 'February',
+            id: 2,
+            name: 'February '+ (new Date()).getFullYear(),
             transactionId: 0,
             transactions: [],
         }
@@ -21,7 +21,7 @@ function initialMonthData() {
 function buildMonth(name) {
   return {
     id: 0,
-    mname: name,
+    name: name,
     transactionId: 0,
     transactions: [],
   };

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,7 +19,7 @@ const Addcontact = (props) => {
   } = props;
 
   const handleInputChange = (e) => {
-    if (e.target.value == '') {
+    if (e.target.value === '') {
       setErrorText('This field is required!');
     } else if (isContactExists(e.target.value)) {
       setErrorText('This contact already exists!');
@@ -47,6 +46,7 @@ const Addcontact = (props) => {
           id='name'
           label='Person Name'
           fullWidth
+          required
           value={contactName}
           onChange={handleInputChange}
           error={errorText.length === 0 ? false : true}

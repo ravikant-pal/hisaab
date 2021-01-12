@@ -12,10 +12,8 @@ import {
   IconButton,
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
-import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
-import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import TodayRoundedIcon from '@material-ui/icons/TodayRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,30 +32,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ContactCard = (props) => {
+const MonthCard = (props) => {
   const classes = useStyles();
-  const { contact, onDelete } = props;
+  const { month, onDelete } = props;
   const getTotal = () => {
-    return contact.transactions
+    return month.transactions
       .map((txn) => parseInt(txn.value))
       .reduce((a, b) => a + b, 0);
   };
-  let icon, color, lable;
-  if (getTotal() < 0) {
-    icon = <ArrowUpwardRoundedIcon />;
-    color = 'secondary';
-    lable = 'will take';
-  } else if (getTotal() > 0) {
-    icon = <ArrowDownwardRoundedIcon />;
-    color = 'primary';
-    lable = 'will give';
-  } else {
-    icon = <RemoveRoundedIcon />;
-    color = 'default';
-    lable = 'neither';
-  }
-
-  const to = '/hisaab/contact/' + contact.id;
+  const to = '/hisaab/month/' + month.id;
 
   return (
     <div className={classes.root}>
@@ -65,10 +48,12 @@ const ContactCard = (props) => {
         <Grid container wrap='nowrap' spacing={2}>
           <ListItem style={{ width: '80%' }} component={RouterLink} to={to}>
             <ListItemAvatar>
-              <Avatar alt={contact.name} src='/static/images/avatar/1.jpg' />
+              <Avatar alt={month.name} >
+                <TodayRoundedIcon/>
+              </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary={contact.name}
+              primary={month.name}
               secondary={
                 <>
                   <Typography
@@ -77,10 +62,9 @@ const ContactCard = (props) => {
                     color='textPrimary'>
                     <Chip
                       variant='outlined'
-                      color={color}
+                      color='secondary'
                       size='small'
-                      icon={icon}
-                      label={lable}
+                      label='you spend'
                     />
                   </Typography>
                   <Typography
@@ -108,7 +92,7 @@ const ContactCard = (props) => {
             color='secondary'
             aria-label='delete'
             className={classes.deleteIcon}
-            onClick={() => onDelete(contact.id)}>
+            onClick={() => onDelete(month.id)}>
             <DeleteForeverRoundedIcon />
           </IconButton>
         </Grid>
@@ -117,4 +101,4 @@ const ContactCard = (props) => {
   );
 };
 
-export default ContactCard;
+export default MonthCard;

@@ -13,13 +13,14 @@ import {
   TextField,
   makeStyles,
 } from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import Addcontact from '../conponents/AddContact';
-import ContactCard from '../conponents/ContactCard';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import ProminentAppBar from '../conponents/ProminentAppBar';
+import Tabs from "../conponents/Tabs";
 import { Search as SearchIcon } from '@material-ui/icons';
 import Page from '../conponents/Page';
-import * as contactService from '../services/ContactService';
+import * as monthservice from '../services/MonthService';
+import AddMonth from '../conponents/AddMonth';
+import MonthCard from '../conponents/MonthCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,40 +53,40 @@ const AppView = () => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const [contactName, setContactName] = useState('');
+  const [monthName, setMonthName] = useState('');
   const [errorText, setErrorText] = useState('');
-  const [records, setRecords] = useState(contactService.getAllContacts());
+  const [months, setMonths] = useState(monthservice.getAllMonths());
+  const year = (new Date()).getFullYear();
 
   const handleOpen = () => {
     setOpen(true);
   };
 
+  
   const handleClose = () => {
     setOpen(false);
-    setContactName('');
+    setMonthName('');
     setErrorText('');
   };
 
-  const handleSaveContact = () => {
-    contactService.insertContact(contactName);
+  const handleSaveMonth = () => {
+    monthservice.insertMonth(monthName+ ' '+ year);
     setOpen(false);
-    setContactName('');
-    setRecords(contactService.getAllContacts());
+    setMonthName('');
+    setMonths(monthservice.getAllMonths());
   };
 
-  const isContactExists = (name) => {
-   return  records.some(cnt => cnt.name.toLowerCase() === name.toLowerCase());
+  const isValid = (name) => {
+    return !months.some(m =>  m.name === name+' '+year)
   }
 
-
-
   const onDelete = (id) => {
-    contactService.deleteContact(id);
-    setRecords(contactService.getAllContacts());
+    monthservice.deleteMonth(id);
+    setMonths(monthservice.getAllMonths());
   };
 
   const getGrandTotal = () => {
-    return records
+    return months
       .map((cnt) => {
         return cnt.transactions
           .map((txn) => parseInt(txn.value))
@@ -98,22 +99,23 @@ const AppView = () => {
     let target = e.target;
 
     if (target.value !== '') {
-      setRecords(
-        contactService
-          .getAllContacts()
+      setMonths(
+        monthservice
+          .getAllMonths()
           .filter((cnt) =>
             cnt.name.toLowerCase().includes(target.value.toLowerCase()),
           ),
       );
     } else {
-      setRecords(contactService.getAllContacts());
+      setMonths(monthservice.getAllMonths());
     }
   };
 
   return (
-    <Page className={classes.root} title='Hisaab'>
+    <Page className={classes.root} title='Hissab - Months'>
       <div>
         <ProminentAppBar />
+        <Tabs month={true} />
         <Grid container justify='center' className={classes.root}>
           <Grid item md={12}>
             <Paper className={classes.paper}>
@@ -125,7 +127,7 @@ const AppView = () => {
                         component='span'
                         variant='h5'
                         color='textPrimary'>
-                        Friends
+                        Months
                       </Typography>
                     }
                   />
@@ -144,7 +146,7 @@ const AppView = () => {
               </Grid>
               <Divider />
               <TextField
-                placeholder='Search Friends...'
+                placeholder='Search Months...'
                 className={classes.searchInput}
                 InputProps={{
                   startAdornment: (
@@ -155,10 +157,10 @@ const AppView = () => {
                 }}
                 onChange={handleSearch}
               />
-              {records.map((contact, index) => (
-                <ContactCard
+              {months.map((month, index) => (
+                <MonthCard
                   key={index}
-                  contact={contact}
+                  month={month}
                   onDelete={onDelete}
                 />
               ))}
@@ -169,19 +171,20 @@ const AppView = () => {
               variant='contained'
               color='default'
               className={classes.fabButton}
-              startIcon={<PersonAddIcon />}
+              startIcon={<EventAvailableIcon />}
               onClick={handleOpen}>
-              New Contact
+              New Month
             </Button>
-            <Addcontact
+            <AddMonth
               open={open}
               handleClose={handleClose}
-              contactName={contactName}
-              setContactName={setContactName}
+              monthName={monthName}
+              setMonthName={setMonthName}
+              year={year}
               errorText={errorText}
               setErrorText={setErrorText}
-              isContactExists={isContactExists}
-              handleSaveContact={handleSaveContact}
+              isValid={isValid}
+              handleSaveMonth={handleSaveMonth}
             />
           </Grid>
         </Grid>

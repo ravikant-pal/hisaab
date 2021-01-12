@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import {
   Button,
   Grid,
@@ -54,10 +54,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TransactionView = () => {
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+const TransactionView = (props) => {
+  let query = useQuery();
+  console.log('props: ',query.get('q'));
   const classes = useStyles();
   const { id } = useParams();
-
   const [txnId, setTxnId] = useState(0);
   const [openGive, setOpenGive] = useState(false);
   const [openTake, setOpenTake] = useState(false);
@@ -152,7 +157,7 @@ const TransactionView = () => {
   };
 
   const findTransactionById = (txnId) => {
-    return contact.transactions.filter((txn) => txn.id == txnId)[0];
+    return contact.transactions.filter((txn) => txn.id === txnId)[0];
   };
 
   return (
