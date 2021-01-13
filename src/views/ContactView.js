@@ -17,7 +17,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Addcontact from '../conponents/AddContact';
 import ContactCard from '../conponents/ContactCard';
 import ProminentAppBar from '../conponents/ProminentAppBar';
-import Tabs from "../conponents/Tabs";
+import Tabs from '../conponents/Tabs';
 import { Search as SearchIcon } from '@material-ui/icons';
 import Page from '../conponents/Page';
 import * as contactService from '../services/ContactService';
@@ -75,10 +75,8 @@ const ContactView = () => {
   };
 
   const isContactExists = (name) => {
-   return  records.some(cnt => cnt.name.toLowerCase() === name.toLowerCase());
-  }
-
-
+    return records.some((cnt) => cnt.name.toLowerCase() === name.toLowerCase());
+  };
 
   const onDelete = (id) => {
     contactService.deleteContact(id);
@@ -115,7 +113,7 @@ const ContactView = () => {
     <Page className={classes.root} title='Hissab - Contacts'>
       <div>
         <ProminentAppBar />
-        <Tabs/>
+        <Tabs />
         <Grid container justify='center' className={classes.root}>
           <Grid item md={12}>
             <Paper className={classes.paper}>

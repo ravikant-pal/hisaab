@@ -1,4 +1,4 @@
-import KEYS from "./keys";
+import KEYS from './keys';
 
 export function buildContact(name) {
   return {

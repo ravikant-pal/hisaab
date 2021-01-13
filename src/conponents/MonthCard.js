@@ -48,8 +48,8 @@ const MonthCard = (props) => {
         <Grid container wrap='nowrap' spacing={2}>
           <ListItem style={{ width: '80%' }} component={RouterLink} to={to}>
             <ListItemAvatar>
-              <Avatar alt={month.name} >
-                <TodayRoundedIcon/>
+              <Avatar alt={month.name}>
+                <TodayRoundedIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import ProminentAppBar from '../conponents/ProminentAppBar';
-import Tabs from "../conponents/Tabs";
+import Tabs from '../conponents/Tabs';
 import { Search as SearchIcon } from '@material-ui/icons';
 import Page from '../conponents/Page';
 import * as monthservice from '../services/MonthService';
@@ -56,13 +56,12 @@ const AppView = () => {
   const [monthName, setMonthName] = useState('');
   const [errorText, setErrorText] = useState('');
   const [months, setMonths] = useState(monthservice.getAllMonths());
-  const year = (new Date()).getFullYear();
+  const year = new Date().getFullYear();
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  
   const handleClose = () => {
     setOpen(false);
     setMonthName('');
@@ -70,15 +69,15 @@ const AppView = () => {
   };
 
   const handleSaveMonth = () => {
-    monthservice.insertMonth(monthName+ ' '+ year);
+    monthservice.insertMonth(monthName + ' ' + year);
     setOpen(false);
     setMonthName('');
     setMonths(monthservice.getAllMonths());
   };
 
   const isValid = (name) => {
-    return !months.some(m =>  m.name === name+' '+year)
-  }
+    return !months.some((m) => m.name === name + ' ' + year);
+  };
 
   const onDelete = (id) => {
     monthservice.deleteMonth(id);
@@ -158,11 +157,7 @@ const AppView = () => {
                 onChange={handleSearch}
               />
               {months.map((month, index) => (
-                <MonthCard
-                  key={index}
-                  month={month}
-                  onDelete={onDelete}
-                />
+                <MonthCard key={index} month={month} onDelete={onDelete} />
               ))}
             </Paper>
           </Grid>

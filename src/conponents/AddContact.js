@@ -23,11 +23,11 @@ const Addcontact = (props) => {
       setErrorText('This field is required!');
     } else if (isContactExists(e.target.value)) {
       setErrorText('This contact already exists!');
-    }else {
+    } else {
       setErrorText('');
-    } 
+    }
     setContactName(e.target.value);
-  }
+  };
 
   return (
     <Dialog
@@ -61,7 +61,7 @@ const Addcontact = (props) => {
           onClick={
             errorText === '' && contactName !== ''
               ? handleSaveContact
-              : () => (errorText) ? '' : setErrorText('This field is required!')
+              : () => (errorText ? '' : setErrorText('This field is required!'))
           }
           color='primary'>
           Save

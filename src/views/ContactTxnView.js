@@ -18,7 +18,7 @@ import TransactionCard from '../conponents/TransactionCard';
 import ProminentAppBar from '../conponents/ProminentAppBar';
 import Page from '../conponents/Page';
 import * as contactService from '../services/ContactService';
-import * as transactionService from "../services/TransactionService";
+import * as transactionService from '../services/TransactionService';
 import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 
@@ -60,7 +60,7 @@ function useQuery() {
 
 const TransactionView = (props) => {
   let query = useQuery();
-  console.log('props: ',query.get('q'));
+  console.log('props: ', query.get('q'));
   const classes = useStyles();
   const { id } = useParams();
   const [txnId, setTxnId] = useState(0);

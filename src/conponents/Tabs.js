@@ -13,25 +13,34 @@ const useStyles = makeStyles({
   },
 });
 
-const  IconLabelTabs = (props) => {
+const IconLabelTabs = (props) => {
   const classes = useStyles();
   const { month } = props;
-  const [value, setValue] = React.useState(month ? 1 : 0  );
+  const [value, setValue] = React.useState(month ? 1 : 0);
 
   return (
     <Paper square className={classes.root}>
       <Tabs
         value={value}
-        onChange={(e,newValue) => setValue(newValue)}
-        indicatorColor="secondary"
-        textColor="primary"
-        centered
-      >
-        <Tab icon={<PersonPinIcon/>} label="Friends" component={RouterLink} to='/hisaab/contacts' />
-        <Tab icon={<EventNoteIcon/>} label="Months" component={RouterLink} to='/hisaab/months' />
+        onChange={(e, newValue) => setValue(newValue)}
+        indicatorColor='secondary'
+        textColor='primary'
+        centered>
+        <Tab
+          icon={<PersonPinIcon />}
+          label='Friends'
+          component={RouterLink}
+          to='/hisaab/contacts'
+        />
+        <Tab
+          icon={<EventNoteIcon />}
+          label='Months'
+          component={RouterLink}
+          to='/hisaab/months'
+        />
       </Tabs>
     </Paper>
   );
-}
+};
 
 export default IconLabelTabs;

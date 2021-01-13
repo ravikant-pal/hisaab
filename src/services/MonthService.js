@@ -1,21 +1,20 @@
-import KEYS from "./keys";
+import KEYS from './keys';
 
 function initialMonthData() {
-    return [
-        {
-            id: 1,
-            name: 'January '+ (new Date()).getFullYear(),
-            transactionId: 0,
-            transactions: [],
-        },
-        {
-            id: 2,
-            name: 'February '+ (new Date()).getFullYear(),
-            transactionId: 0,
-            transactions: [],
-        }
-    ]
-    
+  return [
+    {
+      id: 1,
+      name: 'January ' + new Date().getFullYear(),
+      transactionId: 0,
+      transactions: [],
+    },
+    {
+      id: 2,
+      name: 'February ' + new Date().getFullYear(),
+      transactionId: 0,
+      transactions: [],
+    },
+  ];
 }
 
 function buildMonth(name) {
