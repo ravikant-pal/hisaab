@@ -56,7 +56,7 @@ const AppView = () => {
   const [monthName, setMonthName] = useState('');
   const [errorText, setErrorText] = useState('');
   const [months, setMonths] = useState(monthservice.getAllMonths());
-  const year = new Date().getFullYear();
+  const [year, setYear] = useState(new Date().getFullYear());
 
   const handleOpen = () => {
     setOpen(true);
@@ -65,6 +65,7 @@ const AppView = () => {
   const handleClose = () => {
     setOpen(false);
     setMonthName('');
+    setYear(new Date().getFullYear());
     setErrorText('');
   };
 
@@ -176,6 +177,7 @@ const AppView = () => {
               monthName={monthName}
               setMonthName={setMonthName}
               year={year}
+              setYear={setYear}
               errorText={errorText}
               setErrorText={setErrorText}
               isValid={isValid}

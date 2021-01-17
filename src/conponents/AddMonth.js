@@ -9,6 +9,7 @@ import {
   makeStyles,
   FormHelperText,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  alert: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const AddMonth = (props) => {
@@ -47,6 +51,7 @@ const AddMonth = (props) => {
     monthName,
     setMonthName,
     year,
+    setYear,
     errorText,
     setErrorText,
     isValid,
@@ -55,8 +60,25 @@ const AddMonth = (props) => {
 
   const classes = useStyles();
 
-  const handleInputChange = (e) => {
+  const years = [
+    parseInt(year) - 2,
+    parseInt(year) - 1,
+    parseInt(year),
+    parseInt(year) + 1,
+    parseInt(year) + 2,
+  ];
+
+  const handleInputChangeMonth = (e) => {
     setMonthName(e.target.value);
+    if (isValid(e.target.value)) {
+      setErrorText('');
+    } else {
+      setErrorText('This month already exists!');
+    }
+  };
+
+  const handleInputChangeYear = (e) => {
+    setYear(e.target.value);
     if (isValid(e.target.value)) {
       setErrorText('');
     } else {
@@ -71,6 +93,13 @@ const AddMonth = (props) => {
       aria-labelledby='form-dialog-title'>
       <DialogTitle id='form-dialog-title'>New Month</DialogTitle>
       <DialogContent>
+        {errorText ? (
+          <Alert severity='error' className={classes.alert}>
+            {errorText}
+          </Alert>
+        ) : (
+          ''
+        )}
         <FormControl
           className={classes.formControl}
           error={errorText.length === 0 ? false : true}
@@ -79,18 +108,23 @@ const AddMonth = (props) => {
           <Select
             labelId='month'
             value={monthName}
-            onChange={handleInputChange}
+            onChange={handleInputChangeMonth}
             input={<Input />}>
             {months.map((m) => (
               <MenuItem value={m}>{m}</MenuItem>
             ))}
           </Select>
-          <FormHelperText>{errorText}</FormHelperText>
         </FormControl>
         <FormControl className={classes.formControl}>
           <InputLabel id='year'>Year</InputLabel>
-          <Select labelId='year' defaultValue={year} input={<Input />}>
-            <MenuItem value={year}>{year}</MenuItem>
+          <Select
+            labelId='year'
+            value={year}
+            onChange={handleInputChangeYear}
+            input={<Input />}>
+            {years.map((y) => (
+              <MenuItem value={y}>{y}</MenuItem>
+            ))}
           </Select>
         </FormControl>
       </DialogContent>
@@ -102,7 +136,7 @@ const AddMonth = (props) => {
           onClick={
             errorText === '' && monthName !== ''
               ? handleSaveMonth
-              : () => (errorText ? '' : setErrorText('This field is required!'))
+              : () => (errorText ? '' : setErrorText('fields are required!'))
           }
           color='primary'>
           Save
