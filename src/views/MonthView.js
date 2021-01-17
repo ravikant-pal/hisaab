@@ -74,6 +74,7 @@ const AppView = () => {
     setOpen(false);
     setMonthName('');
     setMonths(monthservice.getAllMonths());
+    setYear(new Date().getFullYear());
   };
 
   const isValid = (name) => {
