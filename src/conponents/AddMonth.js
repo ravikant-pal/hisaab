@@ -51,10 +51,10 @@ const AddMonth = (props) => {
     monthName,
     setMonthName,
     year,
+    isValid,
     setYear,
     errorText,
     setErrorText,
-    isValid,
     handleSaveMonth,
   } = props;
 
@@ -67,24 +67,6 @@ const AddMonth = (props) => {
     parseInt(year) + 1,
     parseInt(year) + 2,
   ];
-
-  const handleInputChangeMonth = (e) => {
-    setMonthName(e.target.value);
-    if (isValid(e.target.value)) {
-      setErrorText('');
-    } else {
-      setErrorText('This month already exists!');
-    }
-  };
-
-  const handleInputChangeYear = (e) => {
-    setYear(e.target.value);
-    if (isValid(e.target.value)) {
-      setErrorText('');
-    } else {
-      setErrorText('This month already exists!');
-    }
-  };
 
   return (
     <Dialog
@@ -108,10 +90,15 @@ const AddMonth = (props) => {
           <Select
             labelId='month'
             value={monthName}
-            onChange={handleInputChangeMonth}
+            onChange={(e) => {
+              setMonthName(e.target.value);
+              isValid(e.target.value, year);
+            }}
             input={<Input />}>
             {months.map((m) => (
-              <MenuItem value={m}>{m}</MenuItem>
+              <MenuItem key={m} value={m}>
+                {m}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -120,10 +107,15 @@ const AddMonth = (props) => {
           <Select
             labelId='year'
             value={year}
-            onChange={handleInputChangeYear}
+            onChange={(e) => {
+              setYear(e.target.value);
+              isValid(monthName, e.target.value);
+            }}
             input={<Input />}>
             {years.map((y) => (
-              <MenuItem value={y}>{y}</MenuItem>
+              <MenuItem key={y} value={y}>
+                {y}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

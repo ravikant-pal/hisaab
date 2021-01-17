@@ -54,9 +54,9 @@ const AppView = () => {
 
   const [open, setOpen] = useState(false);
   const [monthName, setMonthName] = useState('');
-  const [errorText, setErrorText] = useState('');
-  const [months, setMonths] = useState(monthservice.getAllMonths());
   const [year, setYear] = useState(new Date().getFullYear());
+  const [months, setMonths] = useState(monthservice.getAllMonths());
+  const [errorText, setErrorText] = useState('');
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,11 +74,15 @@ const AppView = () => {
     setOpen(false);
     setMonthName('');
     setMonths(monthservice.getAllMonths());
-    setYear(new Date().getFullYear());
+    setErrorText('');
   };
 
-  const isValid = (name) => {
-    return !months.some((m) => m.name === name + ' ' + year);
+  const isValid = (m, y) => {
+    if (months.some((mo) => mo.name === m + ' ' + y)) {
+      setErrorText('This month already exists!');
+    } else {
+      setErrorText('');
+    }
   };
 
   const onDelete = (id) => {
@@ -178,10 +182,10 @@ const AppView = () => {
               monthName={monthName}
               setMonthName={setMonthName}
               year={year}
+              isValid={isValid}
               setYear={setYear}
               errorText={errorText}
               setErrorText={setErrorText}
-              isValid={isValid}
               handleSaveMonth={handleSaveMonth}
             />
           </Grid>
