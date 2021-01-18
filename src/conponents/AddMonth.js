@@ -8,6 +8,7 @@ import {
   MenuItem,
   makeStyles,
   FormHelperText,
+  Grid,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Dialog from '@material-ui/core/Dialog';
@@ -82,43 +83,49 @@ const AddMonth = (props) => {
         ) : (
           ''
         )}
-        <FormControl
-          className={classes.formControl}
-          error={errorText.length === 0 ? false : true}
-          required>
-          <InputLabel htmlFor='month'>Month</InputLabel>
-          <Select
-            labelId='month'
-            value={monthName}
-            onChange={(e) => {
-              setMonthName(e.target.value);
-              isValid(e.target.value, year);
-            }}
-            input={<Input />}>
-            {months.map((m) => (
-              <MenuItem key={m} value={m}>
-                {m}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='year'>Year</InputLabel>
-          <Select
-            labelId='year'
-            value={year}
-            onChange={(e) => {
-              setYear(e.target.value);
-              isValid(monthName, e.target.value);
-            }}
-            input={<Input />}>
-            {years.map((y) => (
-              <MenuItem key={y} value={y}>
-                {y}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Grid container>
+          <Grid item xs={6} sm={6} md={6} xl={6}>
+            <FormControl
+              className={classes.formControl}
+              error={errorText.length === 0 ? false : true}
+              required>
+              <InputLabel htmlFor='month'>Month</InputLabel>
+              <Select
+                labelId='month'
+                value={monthName}
+                onChange={(e) => {
+                  setMonthName(e.target.value);
+                  isValid(e.target.value, year);
+                }}
+                input={<Input />}>
+                {months.map((m) => (
+                  <MenuItem key={m} value={m}>
+                    {m}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} xl={6}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id='year'>Year</InputLabel>
+              <Select
+                labelId='year'
+                value={year}
+                onChange={(e) => {
+                  setYear(e.target.value);
+                  isValid(monthName, e.target.value);
+                }}
+                input={<Input />}>
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>
+                    {y}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color='primary'>

@@ -21,12 +21,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     overflow: 'hidden',
-    padding: theme.spacing(0, 3),
+    margin: `${theme.spacing(1)}px auto`,
+    padding: theme.spacing(2),
   },
   paper: {
     maxWidth: 500,
-    margin: `${theme.spacing(1)}px auto`,
-    padding: theme.spacing(2),
     cursor: 'pointer',
   },
   deleteIcon: {
