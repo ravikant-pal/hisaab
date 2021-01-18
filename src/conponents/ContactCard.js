@@ -62,7 +62,7 @@ const ContactCard = (props) => {
     <div className={classes.root}>
       <Paper className={classes.paper} style={{ background: '#e6e6e6' }}>
         <Grid container wrap='nowrap' spacing={2}>
-          <ListItem style={{ width: '80%' }} component={RouterLink} to={to}>
+          <ListItem style={{ width: '85%' }} component={RouterLink} to={to}>
             <ListItemAvatar>
               <Avatar alt={contact.name} src='/static/images/avatar/1.jpg' />
             </ListItemAvatar>
