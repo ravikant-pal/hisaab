@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   deleteIcon: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
   },
 }));
 
