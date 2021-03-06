@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
   Avatar,
-  Button,
   Chip,
   Divider,
+  Fab,
   Grid,
   Paper,
   InputAdornment,
@@ -33,11 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
   fabButton: {
     position: 'fixed',
-    zIndex: 1,
     bottom: 10,
     left: 0,
     right: 0,
     margin: '0 auto',
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
   },
   paper: {
     maxWidth: 400,
@@ -165,14 +167,13 @@ const ContactView = () => {
             </Paper>
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
-              color='default'
+            <Fab size="medium" variant="extended"
               className={classes.fabButton}
-              startIcon={<PersonAddIcon />}
-              onClick={handleOpen}>
+              onClick={handleOpen}
+            >
+              <PersonAddIcon className={classes.extendedIcon} />
               New Contact
-            </Button>
+            </Fab>
             <Addcontact
               open={open}
               handleClose={handleClose}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
   Avatar,
-  Button,
   Chip,
   Divider,
+  Fab,
   Grid,
   Paper,
   InputAdornment,
@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     padding: theme.spacing(2),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -168,14 +171,13 @@ const AppView = () => {
             </Paper>
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
-              color='default'
+            <Fab size="medium" variant="extended"
               className={classes.fabButton}
-              startIcon={<EventAvailableIcon />}
-              onClick={handleOpen}>
+              onClick={handleOpen}
+            >
+              <EventAvailableIcon className={classes.extendedIcon} />
               New Month
-            </Button>
+            </Fab>
             <AddMonth
               open={open}
               handleClose={handleClose}

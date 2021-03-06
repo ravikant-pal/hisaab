@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import {
-  Button,
   Grid,
+  Fab,
   makeStyles,
   Paper,
   ListItem,
@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
   fabButton: {
     position: 'fixed',
-    zIndex: 1,
     bottom: 10,
     left: 0,
     right: 0,
@@ -42,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
     margin: `${theme.spacing(1)}px auto`,
     padding: theme.spacing(2),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -78,11 +80,11 @@ const MonthTxnView = () => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-          id: ++month.transactionId,
-          itemName: itemName,
-          value: -value,
-          cdate: new Date(),
-        };
+        id: ++month.transactionId,
+        itemName: itemName,
+        value: -value,
+        cdate: new Date(),
+      };
     [item.itemName, item.value] = [itemName, -value];
     if (!txnId) {
       month.transactions.push(item);
@@ -160,14 +162,15 @@ const MonthTxnView = () => {
             </Paper>
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
+            <Fab size="medium"
+              variant="extended"
               color='secondary'
               className={classes.fabButton}
-              startIcon={<ArrowUpwardRoundedIcon />}
-              onClick={handleOpen}>
-              Add
-            </Button>
+              onClick={handleOpen}
+            >
+              <ArrowUpwardRoundedIcon className={classes.extendedIcon} />
+                  Add
+            </Fab>
             <AddExpense
               isAdd={!txnId}
               open={open}

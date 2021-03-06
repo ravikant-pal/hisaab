@@ -59,7 +59,7 @@ const ContactCard = (props) => {
         className={classes.paper}
         style={{ background: txn.value < 0 ? '#ffcccc' : '#ccffcc' }}>
         <Grid container wrap='nowrap' spacing={2}>
-          <ListItem style={{ width: '85%' }}>
+          <ListItem>
             <ListItemAvatar>
               <ReceiptRoundedIcon />
             </ListItemAvatar>

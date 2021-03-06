@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import { useParams, useLocation } from 'react-router-dom';
 import {
-  Button,
   Grid,
+  Fab,
   makeStyles,
   Paper,
   ListItem,
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   giveButton: {
     position: 'fixed',
-    zIndex: 1,
     bottom: 10,
     left: 0,
     right: 100,
@@ -41,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
   takeButton: {
     position: 'fixed',
-    zIndex: 1,
     bottom: 10,
     left: 100,
     right: 0,
@@ -51,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
     margin: `${theme.spacing(1)}px auto`,
     padding: theme.spacing(2),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -106,11 +107,11 @@ const TransactionView = (props) => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-          id: ++contact.transactionId,
-          itemName: itemName,
-          value: value,
-          cdate: new Date(),
-        };
+        id: ++contact.transactionId,
+        itemName: itemName,
+        value: value,
+        cdate: new Date(),
+      };
     [item.itemName, item.value] = [itemName, value];
     if (!txnId) {
       contact.transactions.push(item);
@@ -127,11 +128,11 @@ const TransactionView = (props) => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-          id: ++contact.transactionId,
-          itemName: itemName,
-          value: -value,
-          cdate: new Date(),
-        };
+        id: ++contact.transactionId,
+        itemName: itemName,
+        value: -value,
+        cdate: new Date(),
+      };
     [item.itemName, item.value] = [itemName, -value];
     if (!txnId) {
       contact.transactions.push(item);
@@ -211,24 +212,26 @@ const TransactionView = (props) => {
           <Grid item>
             <Grid container>
               <Grid item md={6}>
-                <Button
-                  variant='contained'
+                <Fab size="medium"
+                  variant="extended"
                   color='secondary'
                   className={classes.giveButton}
-                  startIcon={<ArrowUpwardRoundedIcon />}
-                  onClick={handleOpenGive}>
+                  onClick={handleOpenGive}
+                >
+                  <ArrowUpwardRoundedIcon className={classes.extendedIcon} />
                   Give
-                </Button>
+                </Fab>
               </Grid>
               <Grid item md={6}>
-                <Button
-                  variant='contained'
+                <Fab size="medium"
+                  variant="extended"
                   color='primary'
                   className={classes.takeButton}
-                  startIcon={<ArrowDownwardRoundedIcon />}
-                  onClick={handleOpenTake}>
+                  onClick={handleOpenTake}
+                >
+                  <ArrowDownwardRoundedIcon className={classes.extendedIcon} />
                   Take
-                </Button>
+                </Fab>
               </Grid>
             </Grid>
             <AddExpense
