@@ -31,7 +31,7 @@ const ProminentAppBar = () => {
           <Hidden>
             <Button
               component={RouterLink}
-              to='/hisaab'
+              to='/'
               style={{ textTransform: 'none' }}>
               <Typography
                 className={classes.title}

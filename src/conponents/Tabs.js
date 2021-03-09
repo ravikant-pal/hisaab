@@ -15,8 +15,8 @@ const useStyles = makeStyles({
 
 const IconLabelTabs = (props) => {
   const classes = useStyles();
-  const { month } = props;
-  const [value, setValue] = React.useState(month ? 1 : 0);
+  const { month: daily } = props;
+  const [value, setValue] = React.useState(daily ? 1 : 0);
 
   return (
     <Paper square className={classes.root}>
@@ -34,9 +34,9 @@ const IconLabelTabs = (props) => {
         />
         <Tab
           icon={<EventNoteIcon />}
-          label='Months'
+          label='daily'
           component={RouterLink}
-          to='/hisaab/months'
+          to='/hisaab/daily'
         />
       </Tabs>
     </Paper>

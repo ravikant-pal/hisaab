@@ -47,7 +47,7 @@ const NotFoundView = () => {
             <img
               alt='Under development'
               className={classes.image}
-              src='logo512.png'
+              src={process.env.PUBLIC_URL + '/404.svg'}
             />
           </Box>
         </Container>

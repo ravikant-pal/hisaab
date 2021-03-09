@@ -114,9 +114,9 @@ const TransactionView = (props) => {
       };
     [item.itemName, item.value] = [itemName, value];
     if (!txnId) {
-      contact.transactions.push(item);
+      contact.transactions.unshift(item);
     }
-    transactionService.addExpanceInContact(contact);
+    transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenGive(false);
     setItemName('');
@@ -135,9 +135,9 @@ const TransactionView = (props) => {
       };
     [item.itemName, item.value] = [itemName, -value];
     if (!txnId) {
-      contact.transactions.push(item);
+      contact.transactions.unshift(item);
     }
-    transactionService.addExpanceInContact(contact);
+    transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenTake(false);
     setItemName('');
@@ -145,7 +145,7 @@ const TransactionView = (props) => {
     setTxnId(0);
   };
   const onDelete = (id) => {
-    transactionService.deleteExpanceOfContact(contact, id);
+    transactionService.deleteContactExpance(contact, id);
     setContact(contactService.findById(contact.id));
     setTotal(getTotal());
   };
@@ -170,9 +170,8 @@ const TransactionView = (props) => {
             <Paper className={classes.paper} style={{ background: '#e6e6e6' }}>
               <Grid container wrap='nowrap' spacing={2}>
                 <ListItem
-                  style={{ width: '85%' }}
                   component={RouterLink}
-                  to='/hisaab'>
+                  to='/'>
                   <ListItemAvatar>
                     <Avatar alt={contact.name} />
                   </ListItemAvatar>

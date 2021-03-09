@@ -1,8 +1,8 @@
-const KEYS =  {
-    contacts: 'contacts',
-    months: 'months',
-    monthId:'monthId',
-    contactId: 'contactId',
-  };
+const KEYS = {
+  contacts: 'contacts',
+  daily: 'daily',
+  dailyId: 'dailyId',
+  contactId: 'contactId',
+};
 
 export default KEYS;

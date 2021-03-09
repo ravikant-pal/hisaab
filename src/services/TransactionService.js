@@ -1,27 +1,27 @@
 import * as contactService from './ContactService';
-import * as monthService from './MonthService';
+import * as dailyService from './DailyService';
 import KEYS from './keys';
 
-export function deleteExpanceOfContact(contact, txnId) {
+export function deleteContactExpance(contact, txnId) {
   contact.transactions = contact.transactions.filter((txn) => txn.id != txnId);
-  addExpanceInContact(contact);
+  addContactExpance(contact);
 }
 
-export function addExpanceInContact(data) {
+export function addContactExpance(data) {
   let contacts = contactService.getAllContacts();
   let recordIndex = contacts.findIndex((cnt) => cnt.id == data.id);
   contacts[recordIndex] = { ...data };
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 
-export function deleteExpanceOfMonth(month, txnId) {
-  month.transactions = month.transactions.filter((txn) => txn.id != txnId);
-  addExpanceInMonth(month);
+export function deleteDailyExpance(date, txnId) {
+  date.transactions = date.transactions.filter((txn) => txn.id != txnId);
+  addDailyExpance(date);
 }
 
-export function addExpanceInMonth(data) {
-  let months = monthService.getAllMonths();
-  let recordIndex = months.findIndex((m) => m.id == data.id);
-  months[recordIndex] = { ...data };
-  localStorage.setItem(KEYS.months, JSON.stringify(months));
+export function addDailyExpance(date) {
+  let dates = dailyService.getAllDates();
+  let recordIndex = dates.findIndex((m) => m.id == date.id);
+  dates[recordIndex] = { ...date };
+  localStorage.setItem(KEYS.daily, JSON.stringify(dates));
 }
