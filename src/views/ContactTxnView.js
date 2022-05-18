@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { NavLink as RouterLink } from 'react-router-dom';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink as RouterLink } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Grid,
   Fab,
@@ -12,15 +12,18 @@ import {
   ListItemText,
   Typography,
   Chip,
-} from '@material-ui/core';
-import AddExpense from '../conponents/AddExpense';
-import TransactionCard from '../conponents/TransactionCard';
-import ProminentAppBar from '../conponents/ProminentAppBar';
-import Page from '../conponents/Page';
-import * as contactService from '../services/ContactService';
-import * as transactionService from '../services/TransactionService';
-import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
-import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
+  Tooltip,
+  IconButton,
+} from "@material-ui/core";
+import AddExpense from "../conponents/AddExpense";
+import TransactionCard from "../conponents/TransactionCard";
+import ProminentAppBar from "../conponents/ProminentAppBar";
+import Page from "../conponents/Page";
+import * as contactService from "../services/ContactService";
+import * as transactionService from "../services/TransactionService";
+import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import { ArrowBackRounded, ArrowLeftRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,18 +35,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   giveButton: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 10,
     left: 0,
     right: 100,
-    margin: '0 auto',
+    margin: "0 auto",
   },
   takeButton: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 10,
     left: 100,
     right: 0,
-    margin: '0 auto',
+    margin: "0 auto",
   },
   paper: {
     maxWidth: 400,
@@ -61,16 +64,16 @@ function useQuery() {
 
 const TransactionView = (props) => {
   let query = useQuery();
-  console.log('props: ', query.get('q'));
+  console.log("props: ", query.get("q"));
   const classes = useStyles();
   const { id } = useParams();
   const [txnId, setTxnId] = useState(0);
   const [openGive, setOpenGive] = useState(false);
   const [openTake, setOpenTake] = useState(false);
-  const [itemName, setItemName] = useState('');
+  const [itemName, setItemName] = useState("");
   const [value, setValue] = useState(0);
-  const [nameErrorText, setNameErrorText] = useState('');
-  const [valueErrorText, setValueErrorText] = useState('');
+  const [nameErrorText, setNameErrorText] = useState("");
+  const [valueErrorText, setValueErrorText] = useState("");
   const [contact, setContact] = useState(contactService.findById(id));
   const getTotal = () => {
     return contact.transactions
@@ -90,28 +93,28 @@ const TransactionView = (props) => {
   const handleCloseGive = () => {
     setOpenGive(false);
     setValue(0);
-    setItemName('');
-    setNameErrorText('');
-    setValueErrorText('');
+    setItemName("");
+    setNameErrorText("");
+    setValueErrorText("");
   };
 
   const handleCloseTake = () => {
     setOpenTake(false);
     setValue(0);
-    setItemName('');
-    setNameErrorText('');
-    setValueErrorText('');
+    setItemName("");
+    setNameErrorText("");
+    setValueErrorText("");
   };
 
   const handleSaveItemGive = () => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-        id: ++contact.transactionId,
-        itemName: itemName,
-        value: value,
-        cdate: new Date(),
-      };
+          id: ++contact.transactionId,
+          itemName: itemName,
+          value: value,
+          cdate: new Date(),
+        };
     [item.itemName, item.value] = [itemName, value];
     if (!txnId) {
       contact.transactions.unshift(item);
@@ -119,7 +122,7 @@ const TransactionView = (props) => {
     transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenGive(false);
-    setItemName('');
+    setItemName("");
     setValue(0);
     setTxnId(0);
   };
@@ -128,11 +131,11 @@ const TransactionView = (props) => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-        id: ++contact.transactionId,
-        itemName: itemName,
-        value: -value,
-        cdate: new Date(),
-      };
+          id: ++contact.transactionId,
+          itemName: itemName,
+          value: -value,
+          cdate: new Date(),
+        };
     [item.itemName, item.value] = [itemName, -value];
     if (!txnId) {
       contact.transactions.unshift(item);
@@ -140,7 +143,7 @@ const TransactionView = (props) => {
     transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenTake(false);
-    setItemName('');
+    setItemName("");
     setValue(0);
     setTxnId(0);
   };
@@ -165,31 +168,34 @@ const TransactionView = (props) => {
     <Page className={classes.root} title={contact.name}>
       <div>
         <ProminentAppBar />
-        <Grid container justify='center' className={classes.root}>
+        <Grid container justify="center" className={classes.root}>
           <Grid item md={12}>
-            <Paper className={classes.paper} style={{ background: '#e6e6e6' }}>
-              <Grid container wrap='nowrap' spacing={2}>
-                <ListItem
-                  component={RouterLink}
-                  to='/'>
+            <Paper className={classes.paper} style={{ background: "#e6e6e6" }}>
+              <Grid container wrap="nowrap" spacing={2}>
+                <ListItem component={RouterLink} to="/">
                   <ListItemAvatar>
-                    <Avatar alt={contact.name} />
+                    <Tooltip title="Back">
+                      <IconButton edge="end" aria-label="add-to-secret">
+                        <ArrowBackRounded />
+                      </IconButton>
+                    </Tooltip>
                   </ListItemAvatar>
                   <ListItemText
                     primary={
                       <Typography
-                        component='span'
-                        variant='h5'
-                        color='textPrimary'>
+                        component="span"
+                        variant="h5"
+                        color="textPrimary"
+                      >
                         {contact.name}
                       </Typography>
                     }
                   />
                 </ListItem>
                 <Chip
-                  variant='outlined'
-                  color={total < 0 ? 'secondary' : 'primary'}
-                  size='small'
+                  variant="outlined"
+                  color={total < 0 ? "secondary" : "primary"}
+                  size="small"
                   avatar={
                     <Avatar>
                       <b>₹</b>
@@ -211,9 +217,10 @@ const TransactionView = (props) => {
           <Grid item>
             <Grid container>
               <Grid item md={6}>
-                <Fab size="medium"
+                <Fab
+                  size="medium"
                   variant="extended"
-                  color='secondary'
+                  color="secondary"
                   className={classes.giveButton}
                   onClick={handleOpenGive}
                 >
@@ -222,9 +229,10 @@ const TransactionView = (props) => {
                 </Fab>
               </Grid>
               <Grid item md={6}>
-                <Fab size="medium"
+                <Fab
+                  size="medium"
                   variant="extended"
-                  color='primary'
+                  color="primary"
                   className={classes.takeButton}
                   onClick={handleOpenTake}
                 >
