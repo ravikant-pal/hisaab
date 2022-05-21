@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Avatar,
   Chip,
@@ -12,15 +12,24 @@ import {
   Typography,
   TextField,
   makeStyles,
-} from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import Addcontact from '../conponents/AddContact';
-import ContactCard from '../conponents/ContactCard';
-import ProminentAppBar from '../conponents/ProminentAppBar';
-import Tabs from '../conponents/Tabs';
-import { Search as SearchIcon } from '@material-ui/icons';
-import Page from '../conponents/Page';
-import * as contactService from '../services/ContactService';
+  List,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  Tooltip,
+} from "@material-ui/core";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import Addcontact from "../conponents/AddContact";
+import ContactCard from "../conponents/ContactCard";
+import ProminentAppBar from "../conponents/ProminentAppBar";
+import Tabs from "../conponents/Tabs";
+import {
+  PersonAddRounded,
+  PersonRounded,
+  Search as SearchIcon,
+  SearchRounded,
+} from "@material-ui/icons";
+import Page from "../conponents/Page";
+import * as contactService from "../services/ContactService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,15 +37,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     spacing: 0,
   },
-  control: {
-    padding: theme.spacing(2),
+  itemList: {
+    padding: theme.spacing(0),
   },
   fabButton: {
-    position: 'fixed',
-    bottom: 10,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
+    position: "fixed",
+    zIndex: 1,
+    bottom: 35,
+    margin: "auto",
+    left: "50%",
+    transform: "translateX(-50%)",
   },
   extendedIcon: {
     marginRight: theme.spacing(1),
@@ -55,8 +65,8 @@ const ContactView = () => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const [contactName, setContactName] = useState('');
-  const [errorText, setErrorText] = useState('');
+  const [contactName, setContactName] = useState("");
+  const [errorText, setErrorText] = useState("");
   const [records, setRecords] = useState(contactService.getAllContacts());
 
   const handleOpen = () => {
@@ -65,14 +75,14 @@ const ContactView = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setContactName('');
-    setErrorText('');
+    setContactName("");
+    setErrorText("");
   };
 
   const handleSaveContact = () => {
     contactService.insertContact(contactName);
     setOpen(false);
-    setContactName('');
+    setContactName("");
     setRecords(contactService.getAllContacts());
   };
 
@@ -98,13 +108,13 @@ const ContactView = () => {
   const handleSearch = (e) => {
     let target = e.target;
 
-    if (target.value !== '') {
+    if (target.value !== "") {
       setRecords(
         contactService
           .getAllContacts()
           .filter((cnt) =>
-            cnt.name.toLowerCase().includes(target.value.toLowerCase()),
-          ),
+            cnt.name.toLowerCase().includes(target.value.toLowerCase())
+          )
       );
     } else {
       setRecords(contactService.getAllContacts());
@@ -112,51 +122,54 @@ const ContactView = () => {
   };
 
   return (
-    <Page className={classes.root} title='Hissab - Contacts'>
-      <div>
-        <ProminentAppBar />
-        <Tabs />
-        <Grid container justify='center' className={classes.root}>
-          <Grid item md={12}>
-            <Paper className={classes.paper}>
-              <Grid container wrap='nowrap' spacing={2}>
-                <ListItem style={{ width: '85%' }}>
-                  <ListItemText
-                    primary={
-                      <Typography
-                        component='span'
-                        variant='h5'
-                        color='textPrimary'>
-                        Friends
-                      </Typography>
+    <Page className={classes.root} title="Hissab - Contacts">
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item sm={4}>
+          <ProminentAppBar />
+          <Tabs />
+          <Paper>
+            <List>
+              <ListItem>
+                <ListItemAvatar>
+                  <Chip
+                    variant="outlined"
+                    color={getGrandTotal() < 0 ? "secondary" : "primary"}
+                    size="small"
+                    avatar={
+                      <Avatar>
+                        <b>₹</b>
+                      </Avatar>
                     }
+                    label={Math.abs(getGrandTotal())}
                   />
-                </ListItem>
-                <Chip
-                  variant='outlined'
-                  color={getGrandTotal() < 0 ? 'secondary' : 'primary'}
-                  size='small'
-                  avatar={
-                    <Avatar>
-                      <b>₹</b>
-                    </Avatar>
-                  }
-                  label={Math.abs(getGrandTotal())}
+                </ListItemAvatar>
+                <ListItemText
+                  disableTypography
+                  primary={<Typography variant="h6">Friends</Typography>}
                 />
-              </Grid>
-              <Divider />
-              <TextField
-                placeholder='Search Friends...'
-                className={classes.searchInput}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleSearch}
-              />
+                <ListItemSecondaryAction>
+                  <TextField
+                    label="Search Friends"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchRounded />
+                        </InputAdornment>
+                      ),
+                    }}
+                    onChange={handleSearch}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+            <List className={classes.itemList}>
               {records.map((contact, index) => (
                 <ContactCard
                   key={index}
@@ -164,29 +177,34 @@ const ContactView = () => {
                   onDelete={onDelete}
                 />
               ))}
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Fab size="medium" variant="extended"
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item>
+          <Tooltip title="Add a new key">
+            <Fab
+              color="secondary"
+              variant="extended"
+              size="medium"
+              aria-label="add new contact"
               className={classes.fabButton}
               onClick={handleOpen}
             >
-              <PersonAddIcon className={classes.extendedIcon} />
-              New Contact
+              <PersonAddRounded className={classes.extendedIcon} /> New Contact
             </Fab>
-            <Addcontact
-              open={open}
-              handleClose={handleClose}
-              contactName={contactName}
-              setContactName={setContactName}
-              errorText={errorText}
-              setErrorText={setErrorText}
-              isContactExists={isContactExists}
-              handleSaveContact={handleSaveContact}
-            />
-          </Grid>
+          </Tooltip>
+          <Addcontact
+            open={open}
+            handleClose={handleClose}
+            contactName={contactName}
+            setContactName={setContactName}
+            errorText={errorText}
+            setErrorText={setErrorText}
+            isContactExists={isContactExists}
+            handleSaveContact={handleSaveContact}
+          />
         </Grid>
-      </div>
+      </Grid>
     </Page>
   );
 };

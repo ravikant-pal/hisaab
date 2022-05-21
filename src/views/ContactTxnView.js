@@ -14,6 +14,8 @@ import {
   Chip,
   Tooltip,
   IconButton,
+  ListItemSecondaryAction,
+  List,
 } from "@material-ui/core";
 import AddExpense from "../conponents/AddExpense";
 import TransactionCard from "../conponents/TransactionCard";
@@ -31,27 +33,21 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     spacing: 0,
   },
-  control: {
-    padding: theme.spacing(2),
-  },
   giveButton: {
     position: "fixed",
-    bottom: 10,
-    left: 0,
-    right: 100,
-    margin: "0 auto",
+    zIndex: 1,
+    bottom: 35,
+    margin: "auto",
+    left: "46%",
+    transform: "translateX(-46%)",
   },
   takeButton: {
     position: "fixed",
-    bottom: 10,
-    left: 100,
-    right: 0,
-    margin: "0 auto",
-  },
-  paper: {
-    maxWidth: 400,
-    margin: `${theme.spacing(1)}px auto`,
-    padding: theme.spacing(2),
+    zIndex: 1,
+    bottom: 35,
+    margin: "auto",
+    right: "46%",
+    transform: "translateX(46%)",
   },
   extendedIcon: {
     marginRight: theme.spacing(1),
@@ -165,113 +161,124 @@ const TransactionView = (props) => {
   };
 
   return (
-    <Page className={classes.root} title={contact.name}>
-      <div>
-        <ProminentAppBar />
-        <Grid container justify="center" className={classes.root}>
-          <Grid item md={12}>
-            <Paper className={classes.paper} style={{ background: "#e6e6e6" }}>
-              <Grid container wrap="nowrap" spacing={2}>
-                <ListItem component={RouterLink} to="/">
-                  <ListItemAvatar>
-                    <Tooltip title="Back">
-                      <IconButton edge="end" aria-label="add-to-secret">
-                        <ArrowBackRounded />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography
-                        component="span"
-                        variant="h5"
-                        color="textPrimary"
-                      >
-                        {contact.name}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-                <Chip
-                  variant="outlined"
-                  color={total < 0 ? "secondary" : "primary"}
-                  size="small"
-                  avatar={
-                    <Avatar>
-                      <b>₹</b>
-                    </Avatar>
+    <Page className={classes.root} title={`Your Friend - ${contact.name}`}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item sm={4}>
+          <ProminentAppBar />
+          <Paper style={{ background: "#e6e6e6" }}>
+            <List>
+              <ListItem>
+                <ListItemAvatar>
+                  <Tooltip title="Back">
+                    <IconButton
+                      edge="end"
+                      aria-label="add-to-secret"
+                      component={RouterLink}
+                      to="/"
+                    >
+                      <ArrowBackRounded />
+                    </IconButton>
+                  </Tooltip>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Typography
+                      component="span"
+                      variant="h5"
+                      color="textPrimary"
+                    >
+                      {contact.name}
+                    </Typography>
                   }
-                  label={Math.abs(total)}
                 />
-              </Grid>
-              {contact.transactions.map((txn, index) => (
-                <TransactionCard
-                  key={index}
-                  txn={txn}
-                  onDelete={onDelete}
-                  onEdit={onEdit}
-                />
-              ))}
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Grid container>
-              <Grid item md={6}>
-                <Fab
-                  size="medium"
-                  variant="extended"
-                  color="secondary"
-                  className={classes.giveButton}
-                  onClick={handleOpenGive}
-                >
-                  <ArrowUpwardRoundedIcon className={classes.extendedIcon} />
-                  Give
-                </Fab>
-              </Grid>
-              <Grid item md={6}>
-                <Fab
-                  size="medium"
-                  variant="extended"
-                  color="primary"
-                  className={classes.takeButton}
-                  onClick={handleOpenTake}
-                >
-                  <ArrowDownwardRoundedIcon className={classes.extendedIcon} />
-                  Take
-                </Fab>
-              </Grid>
-            </Grid>
-            <AddExpense
-              isAdd={!txnId}
-              open={openGive}
-              handleClose={handleCloseGive}
-              itemName={itemName}
-              setItemName={setItemName}
-              value={value}
-              setValue={setValue}
-              nameErrorText={nameErrorText}
-              setNameErrorText={setNameErrorText}
-              valueErrorText={valueErrorText}
-              setValueErrorText={setValueErrorText}
-              handleSaveItem={handleSaveItemGive}
-            />
-            <AddExpense
-              isAdd={!txnId}
-              open={openTake}
-              handleClose={handleCloseTake}
-              itemName={itemName}
-              setItemName={setItemName}
-              value={value}
-              setValue={setValue}
-              nameErrorText={nameErrorText}
-              setNameErrorText={setNameErrorText}
-              valueErrorText={valueErrorText}
-              setValueErrorText={setValueErrorText}
-              handleSaveItem={handleSaveItemTake}
-            />
-          </Grid>
+                <ListItemSecondaryAction>
+                  <Chip
+                    variant="outlined"
+                    color={total < 0 ? "secondary" : "primary"}
+                    size="small"
+                    avatar={
+                      <Avatar>
+                        <b>₹</b>
+                      </Avatar>
+                    }
+                    label={Math.abs(total)}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+
+            {contact.transactions.map((txn, index) => (
+              <TransactionCard
+                key={index}
+                txn={txn}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              />
+            ))}
+          </Paper>
         </Grid>
-      </div>
+        <Grid item>
+          <Grid container>
+            <Grid item md={6}>
+              <Fab
+                size="medium"
+                variant="extended"
+                color="secondary"
+                className={classes.giveButton}
+                onClick={handleOpenGive}
+              >
+                <ArrowUpwardRoundedIcon className={classes.extendedIcon} />
+                Give
+              </Fab>
+            </Grid>
+            <Grid item md={6}>
+              <Fab
+                size="medium"
+                variant="extended"
+                color="primary"
+                className={classes.takeButton}
+                onClick={handleOpenTake}
+              >
+                <ArrowDownwardRoundedIcon className={classes.extendedIcon} />
+                Take
+              </Fab>
+            </Grid>
+          </Grid>
+          <AddExpense
+            isAdd={!txnId}
+            open={openGive}
+            handleClose={handleCloseGive}
+            itemName={itemName}
+            setItemName={setItemName}
+            value={value}
+            setValue={setValue}
+            nameErrorText={nameErrorText}
+            setNameErrorText={setNameErrorText}
+            valueErrorText={valueErrorText}
+            setValueErrorText={setValueErrorText}
+            handleSaveItem={handleSaveItemGive}
+          />
+          <AddExpense
+            isAdd={!txnId}
+            open={openTake}
+            handleClose={handleCloseTake}
+            itemName={itemName}
+            setItemName={setItemName}
+            value={value}
+            setValue={setValue}
+            nameErrorText={nameErrorText}
+            setNameErrorText={setNameErrorText}
+            valueErrorText={valueErrorText}
+            setValueErrorText={setValueErrorText}
+            handleSaveItem={handleSaveItemTake}
+          />
+        </Grid>
+      </Grid>
     </Page>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Grid,
   makeStyles,
@@ -9,17 +9,17 @@ import {
   ListItemText,
   Typography,
   Chip,
-} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import EventAvailableIcon from '@material-ui/icons/EventAvailable';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TransactionCardWithoutDate from './TransactionCardWithoutDate';
-import * as transactionService from '../services/TransactionService';
-import * as dailyService from '../services/DailyService';
+} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import EventAvailableIcon from "@material-ui/icons/EventAvailable";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TransactionCardWithoutDate from "./TransactionCardWithoutDate";
+import * as transactionService from "../services/TransactionService";
+import * as dailyService from "../services/DailyService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,21 +32,22 @@ const useStyles = makeStyles((theme) => ({
     margin: `${theme.spacing(0)}px auto`,
     padding: theme.spacing(2),
   },
-  '& .MuiDialog-paper': {
-    margin: '5px',
+  "& .MuiDialog-paper": {
+    margin: "5px",
+  },
+  test: {
+    margin: theme.spacing(1),
   },
 }));
-
 
 const DailyExpense = (props) => {
   const classes = useStyles();
   const { date, setDate, open, setOpen } = props;
   const [txnId, setTxnId] = useState(0);
-  const [itemName, setItemName] = useState('');
+  const [itemName, setItemName] = useState("");
   const [value, setValue] = useState(0);
-  const [nameErrorText, setNameErrorText] = useState('');
-  const [valueErrorText, setValueErrorText] = useState('');
-
+  const [nameErrorText, setNameErrorText] = useState("");
+  const [valueErrorText, setValueErrorText] = useState("");
 
   const findTransactionById = (txnId) => {
     return date.transactions.filter((txn) => txn.id === txnId)[0];
@@ -65,26 +66,26 @@ const DailyExpense = (props) => {
   const handleClose = () => {
     setOpen(false);
     setValue(0);
-    setItemName('');
-    setNameErrorText('');
-    setValueErrorText('');
+    setItemName("");
+    setNameErrorText("");
+    setValueErrorText("");
   };
 
   const handleSaveItem = () => {
     let item = txnId
       ? findTransactionById(txnId)
       : {
-        id: ++date.transactionId,
-        itemName: itemName,
-        value: -value,
-        cdate: new Date(),
-      };
+          id: ++date.transactionId,
+          itemName: itemName,
+          value: -value,
+          cdate: new Date(),
+        };
     [item.itemName, item.value] = [itemName, -value];
     if (!txnId) {
       date.transactions.unshift(item);
     }
     transactionService.addDailyExpance(date);
-    setItemName('');
+    setItemName("");
     setValue(0);
     setTxnId(0);
   };
@@ -101,8 +102,8 @@ const DailyExpense = (props) => {
   };
 
   const vaidate = () => {
-    if (itemName === '') setNameErrorText('This field is required!');
-    if (!value) setValueErrorText('Incorrect entry.');
+    if (itemName === "") setNameErrorText("This field is required!");
+    if (!value) setValueErrorText("Incorrect entry.");
     return false;
   };
 
@@ -110,12 +111,12 @@ const DailyExpense = (props) => {
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby='form-dialog-title'
+      aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id='form-dialog-title' >
+      <DialogTitle id="form-dialog-title">
         <Grid container spacing={2}>
           <Grid item md={12}>
-            <Grid container wrap='nowrap' spacing={2}>
+            <Grid container wrap="nowrap" spacing={2}>
               <ListItem>
                 <ListItemAvatar>
                   <EventAvailableIcon />
@@ -123,18 +124,19 @@ const DailyExpense = (props) => {
                 <ListItemText
                   primary={
                     <Typography
-                      component='span'
-                      variant='h6'
-                      color='textPrimary'>
+                      component="span"
+                      variant="h6"
+                      color="textPrimary"
+                    >
                       {date.name}
                     </Typography>
                   }
                 />
               </ListItem>
               <Chip
-                variant='outlined'
-                color={getTotal() < 0 ? 'secondary' : 'primary'}
-                size='small'
+                variant="outlined"
+                color={getTotal() < 0 ? "secondary" : "primary"}
+                size="small"
                 avatar={
                   <Avatar>
                     <b>₹</b>
@@ -147,11 +149,13 @@ const DailyExpense = (props) => {
         </Grid>
       </DialogTitle>
       <DialogContent>
-        {date.transactions.length > 0 ?
-          <Grid container justify='center' className={classes.root}>
+        {date.transactions.length > 0 ? (
+          <Grid container justify="center" className={classes.root}>
             <Grid item md={12}>
-              <Paper className={classes.paper} style={{ background: '#e6e6e6' }}>
-
+              <Paper
+                className={classes.paper}
+                style={{ background: "#e6e6e6" }}
+              >
                 {date.transactions.map((txn, index) => (
                   <TransactionCardWithoutDate
                     key={index}
@@ -163,23 +167,20 @@ const DailyExpense = (props) => {
               </Paper>
             </Grid>
           </Grid>
-          :
-          null
-        }
-
+        ) : null}
       </DialogContent>
       <DialogActions>
-        <Grid container justify='center' spacing={2} >
+        <Grid container justify="center" className={classes.test}>
           <Grid item md={6}>
             <TextField
               autoFocus
-              margin='dense'
-              label='Item Name'
-              fullWidth
+              margin="dense"
+              label="Item Name"
+              variant="outlined"
               value={itemName}
               onChange={(e) => {
-                if (e.target.value !== '') setNameErrorText('');
-                else setNameErrorText('This field is required!');
+                if (e.target.value !== "") setNameErrorText("");
+                else setNameErrorText("This field is required!");
                 setItemName(e.target.value);
               }}
               error={nameErrorText.length === 0 ? false : true}
@@ -188,14 +189,14 @@ const DailyExpense = (props) => {
           </Grid>
           <Grid item md={6}>
             <TextField
-              margin='dense'
-              label='Value'
-              fullWidth
+              margin="dense"
+              label="Value"
+              variant="outlined"
               value={value}
               onChange={(e) => {
-                if (e.target.value !== '0' && /^\d+$/.test(e.target.value))
-                  setValueErrorText('');
-                else setValueErrorText('Incorrect entry.');
+                if (e.target.value !== "0" && /^\d+$/.test(e.target.value))
+                  setValueErrorText("");
+                else setValueErrorText("Incorrect entry.");
                 setValue(e.target.value);
               }}
               error={valueErrorText.length === 0 ? false : true}
@@ -203,22 +204,23 @@ const DailyExpense = (props) => {
             />
           </Grid>
           <Grid item md={12}>
-            <Grid container justify='flex-end'>
-              <Button onClick={handleClose} color='primary'>
+            <Grid container justify="flex-end">
+              <Button onClick={handleClose} color="secondary">
                 Cancel
-            </Button>
+              </Button>
               <Button
                 onClick={
-                  nameErrorText === '' &&
-                    valueErrorText === '' &&
-                    itemName !== '' &&
-                    value
+                  nameErrorText === "" &&
+                  valueErrorText === "" &&
+                  itemName !== "" &&
+                  value
                     ? handleSaveItem
                     : vaidate
                 }
-                color='primary'>
+                color="primary"
+              >
                 Save
-            </Button>
+              </Button>
             </Grid>
           </Grid>
         </Grid>

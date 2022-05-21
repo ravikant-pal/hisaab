@@ -1,12 +1,12 @@
-import React from 'react';
-import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from "react";
+import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const AddExpence = (props) => {
   const {
@@ -25,8 +25,8 @@ const AddExpence = (props) => {
   } = props;
 
   const vaidate = () => {
-    if (itemName === '') setNameErrorText('This field is required!');
-    if (!value) setValueErrorText('Incorrect entry.');
+    if (itemName === "") setNameErrorText("This field is required!");
+    if (!value) setValueErrorText("Incorrect entry.");
     return false;
   };
 
@@ -34,9 +34,10 @@ const AddExpence = (props) => {
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby='form-dialog-title'>
-      <DialogTitle id='form-dialog-title'>
-        {isAdd ? 'Add Expance' : 'Edit Expance'}
+      aria-labelledby="form-dialog-title"
+    >
+      <DialogTitle id="form-dialog-title">
+        {isAdd ? "Add Expance" : "Edit Expance"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -46,13 +47,14 @@ const AddExpence = (props) => {
           <Grid item md={6}>
             <TextField
               autoFocus
-              margin='dense'
-              label='Item Name'
+              margin="dense"
+              label="Item Name"
+              variant="outlined"
               fullWidth
               value={itemName}
               onChange={(e) => {
-                if (e.target.value !== '') setNameErrorText('');
-                else setNameErrorText('This field is required!');
+                if (e.target.value !== "") setNameErrorText("");
+                else setNameErrorText("This field is required!");
                 setItemName(e.target.value);
               }}
               error={nameErrorText.length === 0 ? false : true}
@@ -61,14 +63,15 @@ const AddExpence = (props) => {
           </Grid>
           <Grid item md={6}>
             <TextField
-              margin='dense'
-              label='Value'
+              margin="dense"
+              label="Value"
+              variant="outlined"
               fullWidth
               value={value}
               onChange={(e) => {
-                if (e.target.value !== '0' && /^\d+$/.test(e.target.value))
-                  setValueErrorText('');
-                else setValueErrorText('Incorrect entry.');
+                if (e.target.value !== "0" && /^\d+$/.test(e.target.value))
+                  setValueErrorText("");
+                else setValueErrorText("Incorrect entry.");
                 setValue(e.target.value);
               }}
               error={valueErrorText.length === 0 ? false : true}
@@ -78,19 +81,20 @@ const AddExpence = (props) => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color='primary'>
+        <Button onClick={handleClose} color="secondary">
           Cancel
         </Button>
         <Button
           onClick={
-            nameErrorText === '' &&
-            valueErrorText === '' &&
-            itemName !== '' &&
+            nameErrorText === "" &&
+            valueErrorText === "" &&
+            itemName !== "" &&
             value
               ? handleSaveItem
               : vaidate
           }
-          color='primary'>
+          color="primary"
+        >
           Save
         </Button>
       </DialogActions>
