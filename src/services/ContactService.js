@@ -1,4 +1,4 @@
-import KEYS from './keys';
+import KEYS from "./keys";
 
 export function buildContact(name) {
   return {
@@ -11,27 +11,27 @@ export function buildContact(name) {
 export function insertContact(data) {
   let contacts = getAllContacts();
   data = buildContact(data);
-  data['id'] = generateContactId();
+  data["id"] = generateContactId();
   contacts.push(data);
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 
 export function deleteContact(id) {
   let contacts = getAllContacts();
-  contacts = contacts.filter((cnt) => cnt.id != id);
+  contacts = contacts.filter((cnt) => cnt.id !== id);
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 
 export function generateContactId() {
-  if (localStorage.getItem(KEYS.contactId) == null)
-    localStorage.setItem(KEYS.contactId, '0');
+  if (localStorage.getItem(KEYS.contactId) === null)
+    localStorage.setItem(KEYS.contactId, "0");
   var id = parseInt(localStorage.getItem(KEYS.contactId));
   localStorage.setItem(KEYS.contactId, (++id).toString());
   return id;
 }
 
 export function getAllContacts() {
-  if (localStorage.getItem(KEYS.contacts) == null) {
+  if (localStorage.getItem(KEYS.contacts) === null) {
     localStorage.setItem(KEYS.contacts, JSON.stringify([]));
   }
   return JSON.parse(localStorage.getItem(KEYS.contacts));
@@ -39,5 +39,5 @@ export function getAllContacts() {
 
 export function findById(id) {
   let contacts = getAllContacts();
-  return contacts.filter((cnt) => cnt.id == id)[0];
+  return contacts.filter((cnt) => cnt.id === id)[0];
 }

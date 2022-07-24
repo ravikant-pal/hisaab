@@ -25,7 +25,7 @@ import * as contactService from "../services/ContactService";
 import * as transactionService from "../services/TransactionService";
 import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
-import { ArrowBackRounded, ArrowLeftRounded } from "@material-ui/icons";
+import { ArrowBackRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -168,7 +168,7 @@ const TransactionView = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item sm={4}>
+        <Grid item xs={12} sm={4}>
           <ProminentAppBar />
           <Paper style={{ background: "#e6e6e6" }}>
             <List>

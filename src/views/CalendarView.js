@@ -41,7 +41,7 @@ const AppView = () => {
 
   const tileContent = ({ date, view }) => {
     let content = null;
-    if (view == "month") {
+    if (view === "month") {
       let total = dailyService.getTotalForDay(date);
       if (total) {
         content = (
@@ -62,7 +62,7 @@ const AppView = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item sm={4}>
+        <Grid item xs={12} sm={4}>
           <ProminentAppBar />
           <Tabs month={true} />
           <Paper>

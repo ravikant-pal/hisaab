@@ -59,10 +59,6 @@ const DailyExpense = (props) => {
       .reduce((a, b) => a + b, 0);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
     setValue(0);

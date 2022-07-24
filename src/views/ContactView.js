@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Avatar,
   Chip,
-  Divider,
   Fab,
   Grid,
   Paper,
@@ -17,17 +16,11 @@ import {
   ListItemSecondaryAction,
   Tooltip,
 } from "@material-ui/core";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Addcontact from "../conponents/AddContact";
 import ContactCard from "../conponents/ContactCard";
 import ProminentAppBar from "../conponents/ProminentAppBar";
 import Tabs from "../conponents/Tabs";
-import {
-  PersonAddRounded,
-  PersonRounded,
-  Search as SearchIcon,
-  SearchRounded,
-} from "@material-ui/icons";
+import { PersonAddRounded, SearchRounded } from "@material-ui/icons";
 import Page from "../conponents/Page";
 import * as contactService from "../services/ContactService";
 
@@ -129,7 +122,7 @@ const ContactView = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item sm={4}>
+        <Grid item xs={12} sm={4}>
           <ProminentAppBar />
           <Tabs />
           <Paper>

@@ -4,7 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Hidden from "@material-ui/core/Hidden";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { Avatar, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 const ProminentAppBar = () => {
   return (
