@@ -1,18 +1,18 @@
-import React from 'react';
-import { Box, Container, Typography, makeStyles } from '@material-ui/core';
-import Page from '../conponents/Page';
-import ProminentAppBar from '../conponents/ProminentAppBar';
+import React from "react";
+import { Box, Container, Typography, makeStyles } from "@material-ui/core";
+import Page from "../conponents/Page";
+import ProminentAppBar from "../conponents/ProminentAppBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    height: "100%",
     paddingBottom: theme.spacing(3),
   },
   image: {
     marginTop: 50,
-    display: 'inline-block',
-    maxWidth: '100%',
+    display: "inline-block",
+    maxWidth: "100%",
     width: 560,
   },
   heading: {
@@ -24,30 +24,38 @@ const NotFoundView = () => {
   const classes = useStyles();
 
   return (
-    <Page className={classes.root} title='404'>
+    <Page className={classes.root} title="404">
       <ProminentAppBar />
       <Box
-        display='flex'
-        flexDirection='column'
-        height='100%'
-        justifyContent='center'>
-        <Container maxWidth='md'>
+        display="flex"
+        flexDirection="column"
+        height="100%"
+        justifyContent="center"
+      >
+        <Container maxWidth="md">
           <Typography
-            align='center'
-            color='textPrimary'
+            align="center"
+            color="textPrimary"
             className={classes.heading}
-            variant='h4'>
+            component={"span"}
+            variant="h4"
+          >
             404: The page you are looking for isn’t here
           </Typography>
-          <Typography align='center' color='textPrimary' variant='subtitle2'>
+          <Typography
+            align="center"
+            color="textPrimary"
+            component={"span"}
+            variant="subtitle2"
+          >
             You either tried some shady route or you came here by mistake.
             Whichever it is, try using the navigation
           </Typography>
-          <Box textAlign='center'>
+          <Box textAlign="center">
             <img
-              alt='Under development'
+              alt="Under development"
               className={classes.image}
-              src={process.env.PUBLIC_URL + '/404.svg'}
+              src={process.env.PUBLIC_URL + "/404.svg"}
             />
           </Box>
         </Container>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Chip,
@@ -13,7 +13,6 @@ import {
   makeStyles,
   List,
   ListItemAvatar,
-  ListItemSecondaryAction,
   Tooltip,
 } from "@material-ui/core";
 import Addcontact from "../conponents/AddContact";
@@ -60,7 +59,7 @@ const ContactView = () => {
   const [open, setOpen] = useState(false);
   const [contactName, setContactName] = useState("");
   const [errorText, setErrorText] = useState("");
-  const [records, setRecords] = useState(contactService.getAllContacts());
+  const [records, setRecords] = useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -114,6 +113,10 @@ const ContactView = () => {
     }
   };
 
+  useEffect(() => {
+    setRecords(contactService.getAllContacts());
+  }, []);
+
   return (
     <Page className={classes.root} title="Hissab - Contacts">
       <Grid
@@ -143,23 +146,28 @@ const ContactView = () => {
                 </ListItemAvatar>
                 <ListItemText
                   disableTypography
-                  primary={<Typography variant="h6">Friends</Typography>}
+                  primary={
+                    <Typography component={"span"} variant="h6">
+                      Friends
+                    </Typography>
+                  }
                 />
-                <ListItemSecondaryAction>
-                  <TextField
-                    label="Search Friends"
-                    variant="outlined"
-                    size="small"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchRounded />
-                        </InputAdornment>
-                      ),
-                    }}
-                    onChange={handleSearch}
-                  />
-                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <TextField
+                  label="Search Friends"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchRounded />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={handleSearch}
+                />
               </ListItem>
             </List>
             <List className={classes.itemList}>

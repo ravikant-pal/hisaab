@@ -34,20 +34,20 @@ const useStyles = makeStyles((theme) => ({
     spacing: 0,
   },
   giveButton: {
-    position: "fixed",
-    zIndex: 1,
+    margin: 0,
+    top: "auto",
+    right: "52%",
     bottom: 35,
-    margin: "auto",
-    left: "46%",
-    transform: "translateX(-46%)",
+    left: "auto",
+    position: "fixed",
   },
   takeButton: {
-    position: "fixed",
-    zIndex: 1,
+    margin: 0,
+    top: "auto",
+    right: "auto",
     bottom: 35,
-    margin: "auto",
-    right: "46%",
-    transform: "translateX(46%)",
+    left: "52%",
+    position: "fixed",
   },
   extendedIcon: {
     marginRight: theme.spacing(1),
@@ -157,7 +157,7 @@ const TransactionView = (props) => {
   };
 
   const findTransactionById = (txnId) => {
-    return contact.transactions.filter((txn) => txn.id === txnId)[0];
+    return contact.transactions.filter((txn) => txn.id == txnId)[0];
   };
 
   return (
@@ -170,8 +170,8 @@ const TransactionView = (props) => {
       >
         <Grid item xs={12} sm={4}>
           <ProminentAppBar />
-          <Paper style={{ background: "#e6e6e6" }}>
-            <List>
+          <Paper>
+            <List style={{ background: "#e6e6e6" }}>
               <ListItem>
                 <ListItemAvatar>
                   <Tooltip title="Back">
@@ -224,7 +224,7 @@ const TransactionView = (props) => {
         </Grid>
         <Grid item>
           <Grid container>
-            <Grid item md={6}>
+            <Grid item xs={6} sm={6} md={6}>
               <Fab
                 size="medium"
                 variant="extended"
@@ -236,7 +236,7 @@ const TransactionView = (props) => {
                 Give
               </Fab>
             </Grid>
-            <Grid item md={6}>
+            <Grid item xs={6} sm={6} md={6}>
               <Fab
                 size="medium"
                 variant="extended"

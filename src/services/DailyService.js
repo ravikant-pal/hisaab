@@ -49,7 +49,7 @@ export function getOrBuildDate(date) {
 }
 
 export function getAllDates() {
-  if (localStorage.getItem(KEYS.daily) === null) {
+  if (localStorage.getItem(KEYS.daily) == null) {
     localStorage.setItem(KEYS.daily, JSON.stringify([]));
   }
   return JSON.parse(localStorage.getItem(KEYS.daily));
@@ -57,7 +57,7 @@ export function getAllDates() {
 
 export function findById(id) {
   let dates = getAllDates();
-  return dates.filter((m) => m.id === id)[0];
+  return dates.filter((m) => m.id == id)[0];
 }
 
 export function getTotalForDay(date) {

@@ -17,7 +17,12 @@ const ProminentAppBar = () => {
               to="/"
               style={{ textTransform: "none" }}
             >
-              <Typography style={{ color: "white" }} variant="h5" noWrap>
+              <Typography
+                style={{ color: "white" }}
+                component={"span"}
+                variant="h5"
+                noWrap
+              >
                 Hisaab
                 <Typography variant="subtitle2" noWrap component="div">
                   Manage your expenses with your friends.

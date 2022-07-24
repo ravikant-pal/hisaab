@@ -18,7 +18,7 @@ export function insertContact(data) {
 
 export function deleteContact(id) {
   let contacts = getAllContacts();
-  contacts = contacts.filter((cnt) => cnt.id !== id);
+  contacts = contacts.filter((cnt) => cnt.id != id);
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 
@@ -39,5 +39,5 @@ export function getAllContacts() {
 
 export function findById(id) {
   let contacts = getAllContacts();
-  return contacts.filter((cnt) => cnt.id === id)[0];
+  return contacts.filter((cnt) => cnt.id == id)[0];
 }

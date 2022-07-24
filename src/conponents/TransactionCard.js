@@ -77,7 +77,7 @@ const ContactCard = (props) => {
                   >
                     <Chip
                       variant="outlined"
-                      color={txn.value < 0 ? "#ffcccc" : "#ccffcc"}
+                      color={txn.value < 0 ? "secondary" : "primary"}
                       size="small"
                       avatar={
                         <Avatar>
@@ -87,7 +87,7 @@ const ContactCard = (props) => {
                       label={Math.abs(txn.value)}
                     />
                   </Typography>
-                  <Typography variant="caption">
+                  <Typography component={"span"} variant="caption">
                     {" — " + buildDate()}
                   </Typography>
                 </>

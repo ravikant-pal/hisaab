@@ -50,7 +50,7 @@ const DailyExpense = (props) => {
   const [valueErrorText, setValueErrorText] = useState("");
 
   const findTransactionById = (txnId) => {
-    return date.transactions.filter((txn) => txn.id === txnId)[0];
+    return date.transactions.filter((txn) => txn.id == txnId)[0];
   };
 
   const getTotal = () => {
