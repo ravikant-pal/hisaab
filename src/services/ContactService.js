@@ -1,4 +1,4 @@
-import KEYS from "./keys";
+import KEYS from './keys';
 
 export function buildContact(name) {
   return {
@@ -11,7 +11,7 @@ export function buildContact(name) {
 export function insertContact(data) {
   let contacts = getAllContacts();
   data = buildContact(data);
-  data["id"] = generateContactId();
+  data['id'] = generateContactId();
   contacts.push(data);
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
@@ -22,9 +22,18 @@ export function deleteContact(id) {
   localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
 }
 
+export function updateContact(id, newName) {
+  let contacts = getAllContacts();
+  let contact = contacts.find((cnt) => cnt.id == id);
+  if (contact) {
+    contact.name = newName;
+    localStorage.setItem(KEYS.contacts, JSON.stringify(contacts));
+  }
+}
+
 export function generateContactId() {
   if (localStorage.getItem(KEYS.contactId) === null)
-    localStorage.setItem(KEYS.contactId, "0");
+    localStorage.setItem(KEYS.contactId, '0');
   var id = parseInt(localStorage.getItem(KEYS.contactId));
   localStorage.setItem(KEYS.contactId, (++id).toString());
   return id;

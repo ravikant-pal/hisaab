@@ -1,10 +1,12 @@
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 
 const Addcontact = (props) => {
   const {
@@ -16,58 +18,135 @@ const Addcontact = (props) => {
     setErrorText,
     isContactExists,
     handleSaveContact,
+    isEditing = false,
   } = props;
 
   const handleInputChange = (e) => {
-    if (e.target.value === "") {
-      setErrorText("This field is required!");
-    } else if (isContactExists(e.target.value)) {
-      setErrorText("This contact already exists!");
+    const value = e.target.value;
+    if (value === '') {
+      setErrorText('This field is required!');
+    } else if (value.length < 3) {
+      setErrorText('Name must be at least 3 characters long');
+    } else if (isContactExists(value)) {
+      setErrorText('This contact already exists!');
     } else {
-      setErrorText("");
+      setErrorText('');
     }
-    setContactName(e.target.value);
+    setContactName(value);
+  };
+
+  const handleSubmit = () => {
+    if (contactName === '') {
+      setErrorText('This field is required!');
+    } else if (contactName.length < 3) {
+      setErrorText('Name must be at least 3 characters long');
+    } else if (errorText === '') {
+      handleSaveContact();
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit();
+    }
   };
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="form-dialog-title"
+      aria-labelledby='form-dialog-title'
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          minWidth: { xs: '90%', sm: 400 },
+        },
+      }}
     >
-      <DialogTitle id="form-dialog-title">New Contact</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Please, specify the name of the person with whom you are going to
-          track your expenses.
+      <DialogTitle
+        id='form-dialog-title'
+        sx={{
+          fontSize: '1.5rem',
+          fontWeight: 600,
+          paddingTop: 3,
+          paddingBottom: 2,
+        }}
+      >
+        {isEditing ? 'Edit Contact' : 'New Contact'}
+      </DialogTitle>
+      <DialogContent sx={{ paddingTop: 1 }}>
+        <DialogContentText
+          sx={{
+            marginBottom: 2,
+            color: 'text.secondary',
+            fontSize: '0.95rem',
+          }}
+        >
+          {isEditing
+            ? 'Update the name of your contact.'
+            : 'Please, specify the name of the person with whom you are going to track your expenses.'}
         </DialogContentText>
         <TextField
           autoFocus
-          margin="dense"
-          id="name"
-          label="Person Name"
+          margin='dense'
+          id='name'
+          label='Person Name'
+          placeholder='Enter name (min 3 characters)'
           fullWidth
           required
-          variant="outlined"
+          variant='outlined'
           value={contactName}
           onChange={handleInputChange}
-          error={errorText.length === 0 ? false : true}
+          onKeyPress={handleKeyPress}
+          error={errorText.length > 0}
           helperText={errorText}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 2,
+              '& fieldset': {
+                borderColor: '#e0e0e0',
+              },
+              '&:hover fieldset': {
+                borderColor: '#667eea',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#667eea',
+                borderWidth: 2,
+              },
+            },
+          }}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+      <DialogActions sx={{ padding: 3, paddingTop: 2, gap: 1 }}>
+        <Button
+          onClick={handleClose}
+          variant='outlined'
+          sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            fontWeight: 500,
+            paddingX: 3,
+          }}
+        >
           Cancel
         </Button>
         <Button
-          onClick={
-            errorText === "" && contactName !== ""
-              ? handleSaveContact
-              : () => (errorText ? "" : setErrorText("This field is required!"))
-          }
-          color="primary"
+          onClick={handleSubmit}
+          variant='contained'
+          disabled={errorText.length > 0 || contactName.length < 3}
+          sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            fontWeight: 600,
+            paddingX: 3,
+            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+            '&:hover': {
+              boxShadow: '0 6px 16px rgba(102, 126, 234, 0.4)',
+            },
+          }}
         >
-          Save
+          {isEditing ? 'Update' : 'Save'}
         </Button>
       </DialogActions>
     </Dialog>

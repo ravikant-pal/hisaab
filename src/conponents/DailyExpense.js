@@ -1,89 +1,87 @@
-import React, { useState } from "react";
+import { DeleteForeverRounded, EditRounded } from '@mui/icons-material';
 import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
-  makeStyles,
-  Paper,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
+  IconButton,
+  TextField,
   Typography,
-  Chip,
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import TransactionCardWithoutDate from "./TransactionCardWithoutDate";
-import * as transactionService from "../services/TransactionService";
-import * as dailyService from "../services/DailyService";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    flexGrow: 1,
-    spacing: 0,
-  },
-  paper: {
-    maxWidth: 400,
-    margin: `${theme.spacing(0)}px auto`,
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialog-paper": {
-    margin: "5px",
-  },
-  test: {
-    margin: theme.spacing(1),
-  },
-}));
+} from '@mui/material';
+import { useState } from 'react';
+import * as dailyService from '../services/DailyService';
+import * as transactionService from '../services/TransactionService';
 
 const DailyExpense = (props) => {
-  const classes = useStyles();
   const { date, setDate, open, setOpen } = props;
   const [txnId, setTxnId] = useState(0);
-  const [itemName, setItemName] = useState("");
-  const [value, setValue] = useState(0);
-  const [nameErrorText, setNameErrorText] = useState("");
-  const [valueErrorText, setValueErrorText] = useState("");
+  const [itemName, setItemName] = useState('');
+  const [value, setValue] = useState('');
+  const [nameErrorText, setNameErrorText] = useState('');
+  const [valueErrorText, setValueErrorText] = useState('');
 
+  console.log('DailyExpense render - open:', open, 'date:', date);
   const findTransactionById = (txnId) => {
     return date.transactions.filter((txn) => txn.id == txnId)[0];
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    }).format(amount);
+  };
+
   const getTotal = () => {
-    return date.transactions
+    if (!date || !date.transactions || !Array.isArray(date.transactions)) {
+      return 0;
+    }
+    const total = date.transactions
       .map((txn) => parseInt(txn.value))
       .reduce((a, b) => a + b, 0);
+
+    return total;
   };
 
   const handleClose = () => {
     setOpen(false);
-    setValue(0);
-    setItemName("");
-    setNameErrorText("");
-    setValueErrorText("");
+    setValue('');
+    setItemName('');
+    setNameErrorText('');
+    setValueErrorText('');
+    setTxnId(0);
   };
 
   const handleSaveItem = () => {
-    let item = txnId
-      ? findTransactionById(txnId)
-      : {
-          id: ++date.transactionId,
-          itemName: itemName,
-          value: -value,
-          cdate: new Date(),
-        };
-    [item.itemName, item.value] = [itemName, -value];
-    if (!txnId) {
-      date.transactions.unshift(item);
+    if (!date || !date.transactions) return;
+
+    if (txnId) {
+      // Edit existing transaction
+      let item = findTransactionById(txnId);
+      if (item) {
+        item.itemName = itemName;
+        item.value = -value;
+      }
+    } else {
+      // Add new transaction
+      const newItem = {
+        id: ++date.transactionId,
+        itemName: itemName,
+        value: -value,
+        cdate: new Date(),
+      };
+      date.transactions.unshift(newItem);
     }
+
     transactionService.addDailyExpance(date);
-    setItemName("");
-    setValue(0);
+    setItemName('');
+    setValue('');
     setTxnId(0);
+    setNameErrorText('');
+    setValueErrorText('');
   };
   const onDelete = (id) => {
     transactionService.deleteDailyExpance(date, id);
@@ -97,129 +95,276 @@ const DailyExpense = (props) => {
     setOpen(true);
   };
 
-  const vaidate = () => {
-    if (itemName === "") setNameErrorText("This field is required!");
-    if (!value) setValueErrorText("Incorrect entry.");
-    return false;
+  const validate = () => {
+    if (itemName === '' || itemName.length < 3) {
+      setNameErrorText('Minimum 3 characters required!');
+      return false;
+    }
+    if (!value) {
+      setValueErrorText('Incorrect entry.');
+      return false;
+    }
+    return true;
   };
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      aria-labelledby="form-dialog-title"
+      aria-labelledby='form-dialog-title'
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          minWidth: { xs: '90%', sm: 400 },
+        },
+      }}
     >
-      <DialogTitle id="form-dialog-title">
-        <Grid container spacing={2}>
-          <Grid item md={12}>
-            <Grid container wrap="nowrap" spacing={2}>
-              <ListItem>
-                <ListItemAvatar>
-                  <EventAvailableIcon />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Typography
-                      component="span"
-                      variant="h6"
-                      color="textPrimary"
-                    >
-                      {date.name}
-                    </Typography>
-                  }
-                />
-              </ListItem>
-              <Chip
-                variant="outlined"
-                color={getTotal() < 0 ? "secondary" : "primary"}
-                size="small"
-                avatar={
-                  <Avatar>
-                    <b>₹</b>
-                  </Avatar>
-                }
-                label={Math.abs(getTotal())}
-              />
+      <DialogTitle
+        id='form-dialog-title'
+        sx={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          pb: 2,
+        }}
+      >
+        <Grid container spacing={2} alignItems='center'>
+          <Grid item xs={12}>
+            <Grid
+              container
+              wrap='nowrap'
+              spacing={2}
+              alignItems='center'
+              justifyContent='space-between'
+            >
+              <Grid item xs>
+                <Typography
+                  variant='h6'
+                  component='div'
+                  sx={{ fontWeight: 600 }}
+                >
+                  {date?.name || 'Daily Expense'}
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                <Box
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    bgcolor: 'rgba(255, 255, 255, 0.3)',
+                    color: 'white',
+                    border: '1px solid rgba(255, 255, 255, 0.4)',
+                    px: 2,
+                    py: 0.5,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  {formatCurrency(Math.abs(getTotal()))}
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
       </DialogTitle>
-      <DialogContent>
-        {date.transactions.length > 0 ? (
-          <Grid container justify="center" className={classes.root}>
-            <Grid item md={12}>
-              <Paper
-                className={classes.paper}
-                style={{ background: "#e6e6e6" }}
+      <DialogContent sx={{ pt: 2, pb: 1 }}>
+        {/* Transactions List */}
+        {date && date.transactions && date.transactions.length > 0 ? (
+          <Box
+            sx={{
+              maxHeight: '300px',
+              overflowY: 'auto',
+              my: 2,
+              '&::-webkit-scrollbar': {
+                width: '6px',
+              },
+            }}
+          >
+            {date.transactions.map((txn, index) => (
+              <Box
+                key={index}
+                sx={{
+                  p: 1.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'white',
+                  mb: index < date.transactions.length - 1 ? 1 : 0,
+                  borderRadius: 1.5,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                }}
               >
-                {date.transactions.map((txn, index) => (
-                  <TransactionCardWithoutDate
-                    key={index}
-                    txn={txn}
-                    onDelete={onDelete}
-                    onEdit={onEdit}
-                  />
-                ))}
-              </Paper>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant='body2' sx={{ fontWeight: 600, mb: 0.5 }}>
+                    {txn.itemName}
+                  </Typography>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: txn.value < 0 ? '#ff4444' : '#4caf50',
+                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                    }}
+                  >
+                    {formatCurrency(Math.abs(txn.value))}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', gap: 0.5 }}>
+                  <IconButton
+                    size='small'
+                    onClick={() => onEdit(txn.id)}
+                    sx={{
+                      color: '#667eea',
+                      '&:hover': {
+                        backgroundColor: '#e8eaf6',
+                      },
+                    }}
+                  >
+                    <EditRounded sx={{ fontSize: 18 }} />
+                  </IconButton>
+                  <IconButton
+                    size='small'
+                    onClick={() => onDelete(txn.id)}
+                    sx={{
+                      color: '#ff4444',
+                      '&:hover': {
+                        backgroundColor: '#ffebee',
+                      },
+                    }}
+                  >
+                    <DeleteForeverRounded sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              textAlign: 'center',
+              py: 2,
+              color: 'text.secondary',
+              mb: 2,
+            }}
+          >
+            <Typography variant='body2'>
+              No expenses yet. Add your first expense below.
+            </Typography>
+          </Box>
+        )}
+
+        {/* Add Expense Form */}
+        <Box
+          sx={{ mt: 3, pt: 3, borderTop: '1px solid', borderColor: 'divider' }}
+        >
+          <Typography
+            variant='subtitle2'
+            sx={{ mb: 1.5, fontWeight: 600, color: '#667eea' }}
+          >
+            {txnId ? 'Update Expense' : 'Add New Expense'}
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={7}>
+              <TextField
+                autoFocus
+                label='Item Name'
+                variant='outlined'
+                fullWidth
+                size='small'
+                value={itemName}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setItemName(val);
+                  if (val.length >= 3) {
+                    setNameErrorText('');
+                  } else if (val === '') {
+                    setNameErrorText('This field is required!');
+                  } else {
+                    setNameErrorText('Minimum 3 characters required!');
+                  }
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && validate()) {
+                    handleSaveItem();
+                  }
+                }}
+                error={nameErrorText.length > 0}
+                helperText={nameErrorText}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={5}>
+              <TextField
+                label='Value'
+                variant='outlined'
+                fullWidth
+                size='small'
+                value={value}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setValue(val);
+                  if (val !== '0' && /^\d+$/.test(val)) {
+                    setValueErrorText('');
+                  } else {
+                    setValueErrorText('Incorrect entry.');
+                  }
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && validate()) {
+                    handleSaveItem();
+                  }
+                }}
+                error={valueErrorText.length > 0}
+                helperText={valueErrorText}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                  },
+                }}
+              />
             </Grid>
           </Grid>
-        ) : null}
+        </Box>
       </DialogContent>
-      <DialogActions>
-        <Grid container justify="center" className={classes.test}>
-          <Grid item md={6}>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Item Name"
-              variant="outlined"
-              value={itemName}
-              onChange={(e) => {
-                if (e.target.value !== "") setNameErrorText("");
-                else setNameErrorText("This field is required!");
-                setItemName(e.target.value);
-              }}
-              error={nameErrorText.length === 0 ? false : true}
-              helperText={nameErrorText}
-            />
-          </Grid>
-          <Grid item md={6}>
-            <TextField
-              margin="dense"
-              label="Value"
-              variant="outlined"
-              value={value}
-              onChange={(e) => {
-                if (e.target.value !== "0" && /^\d+$/.test(e.target.value))
-                  setValueErrorText("");
-                else setValueErrorText("Incorrect entry.");
-                setValue(e.target.value);
-              }}
-              error={valueErrorText.length === 0 ? false : true}
-              helperText={valueErrorText}
-            />
-          </Grid>
-          <Grid item md={12}>
-            <Grid container justify="flex-end">
-              <Button onClick={handleClose} color="secondary">
-                Cancel
-              </Button>
-              <Button
-                onClick={
-                  nameErrorText === "" &&
-                  valueErrorText === "" &&
-                  itemName !== "" &&
-                  value
-                    ? handleSaveItem
-                    : vaidate
-                }
-                color="primary"
-              >
-                Save
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
+      <DialogActions
+        sx={{ px: 3, py: 2, borderTop: '1px solid', borderColor: 'divider' }}
+      >
+        <Button
+          onClick={handleClose}
+          sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            px: 3,
+          }}
+        >
+          Close
+        </Button>
+        <Button
+          onClick={
+            nameErrorText === '' &&
+            valueErrorText === '' &&
+            itemName !== '' &&
+            value
+              ? handleSaveItem
+              : validate
+          }
+          variant='contained'
+          sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            px: 3,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            '&:hover': {
+              background: 'linear-gradient(135deg, #5568d3 0%, #63408a 100%)',
+            },
+          }}
+        >
+          {txnId ? 'Update Expense' : 'Add Expense'}
+        </Button>
       </DialogActions>
     </Dialog>
   );

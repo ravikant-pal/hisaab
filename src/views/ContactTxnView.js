@@ -1,58 +1,30 @@
-import React, { useState } from "react";
-import { NavLink as RouterLink } from "react-router-dom";
-import { useParams, useLocation } from "react-router-dom";
 import {
-  Grid,
-  Fab,
-  makeStyles,
-  Paper,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Typography,
+  ArrowBackRounded,
+  ArrowDownwardRounded as ArrowDownwardRoundedIcon,
+  ArrowUpwardRounded as ArrowUpwardRoundedIcon,
+} from '@mui/icons-material';
+import {
+  Box,
   Chip,
-  Tooltip,
+  Fab,
   IconButton,
-  ListItemSecondaryAction,
   List,
-} from "@material-ui/core";
-import AddExpense from "../conponents/AddExpense";
-import TransactionCard from "../conponents/TransactionCard";
-import ProminentAppBar from "../conponents/ProminentAppBar";
-import Page from "../conponents/Page";
-import * as contactService from "../services/ContactService";
-import * as transactionService from "../services/TransactionService";
-import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
-import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
-import { ArrowBackRounded } from "@material-ui/icons";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    flexGrow: 1,
-    spacing: 0,
-  },
-  giveButton: {
-    margin: 0,
-    top: "auto",
-    right: "52%",
-    bottom: 35,
-    left: "auto",
-    position: "fixed",
-  },
-  takeButton: {
-    margin: 0,
-    top: "auto",
-    right: "auto",
-    bottom: 35,
-    left: "52%",
-    position: "fixed",
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import {
+  NavLink as RouterLink,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
+import AddExpense from '../conponents/AddExpense';
+import AppContainer from '../conponents/AppContainer';
+import Page from '../conponents/Page';
+import TransactionCard from '../conponents/TransactionCard';
+import * as contactService from '../services/ContactService';
+import * as transactionService from '../services/TransactionService';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -60,22 +32,31 @@ function useQuery() {
 
 const TransactionView = (props) => {
   let query = useQuery();
-  console.log("props: ", query.get("q"));
-  const classes = useStyles();
   const { id } = useParams();
   const [txnId, setTxnId] = useState(0);
   const [openGive, setOpenGive] = useState(false);
   const [openTake, setOpenTake] = useState(false);
-  const [itemName, setItemName] = useState("");
+  const [itemName, setItemName] = useState('');
   const [value, setValue] = useState(0);
-  const [nameErrorText, setNameErrorText] = useState("");
-  const [valueErrorText, setValueErrorText] = useState("");
+  const [nameErrorText, setNameErrorText] = useState('');
+  const [valueErrorText, setValueErrorText] = useState('');
   const [contact, setContact] = useState(contactService.findById(id));
+
   const getTotal = () => {
     return contact.transactions
       .map((txn) => parseInt(txn.value))
       .reduce((a, b) => a + b, 0);
   };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(Math.abs(amount));
+  };
+
   const [total, setTotal] = useState(getTotal());
 
   const handleOpenGive = () => {
@@ -89,17 +70,17 @@ const TransactionView = (props) => {
   const handleCloseGive = () => {
     setOpenGive(false);
     setValue(0);
-    setItemName("");
-    setNameErrorText("");
-    setValueErrorText("");
+    setItemName('');
+    setNameErrorText('');
+    setValueErrorText('');
   };
 
   const handleCloseTake = () => {
     setOpenTake(false);
     setValue(0);
-    setItemName("");
-    setNameErrorText("");
-    setValueErrorText("");
+    setItemName('');
+    setNameErrorText('');
+    setValueErrorText('');
   };
 
   const handleSaveItemGive = () => {
@@ -118,7 +99,7 @@ const TransactionView = (props) => {
     transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenGive(false);
-    setItemName("");
+    setItemName('');
     setValue(0);
     setTxnId(0);
   };
@@ -139,7 +120,7 @@ const TransactionView = (props) => {
     transactionService.addContactExpance(contact);
     setTotal(getTotal());
     setOpenTake(false);
-    setItemName("");
+    setItemName('');
     setValue(0);
     setTxnId(0);
   };
@@ -161,57 +142,126 @@ const TransactionView = (props) => {
   };
 
   return (
-    <Page className={classes.root} title={`Your Friend - ${contact.name}`}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item xs={12} sm={4}>
-          <ProminentAppBar />
-          <Paper>
-            <List style={{ background: "#e6e6e6" }}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Tooltip title="Back">
-                    <IconButton
-                      edge="end"
-                      aria-label="add-to-secret"
-                      component={RouterLink}
-                      to="/"
-                    >
-                      <ArrowBackRounded />
-                    </IconButton>
-                  </Tooltip>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Typography
-                      component="span"
-                      variant="h5"
-                      color="textPrimary"
-                    >
-                      {contact.name}
-                    </Typography>
-                  }
-                />
-                <ListItemSecondaryAction>
-                  <Chip
-                    variant="outlined"
-                    color={total < 0 ? "secondary" : "primary"}
-                    size="small"
-                    avatar={
-                      <Avatar>
-                        <b>₹</b>
-                      </Avatar>
-                    }
-                    label={Math.abs(total)}
-                  />
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+    <Page
+      sx={{
+        backgroundColor: 'background.default',
+        flexGrow: 1,
+      }}
+      title={`Your Friend - ${contact.name}`}
+    >
+      <AppContainer showTabs={false}>
+        <Box
+          sx={{
+            padding: { xs: '20px 16px', sm: '24px' },
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            borderRadius: 0,
+            marginBottom: 0,
+          }}
+        >
+          <Stack spacing={2}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Tooltip title='Back to friends' arrow>
+                <IconButton
+                  component={RouterLink}
+                  to='/'
+                  sx={{
+                    color: 'white',
+                    backgroundColor: 'rgba(255,255,255,0.15)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255,255,255,0.25)',
+                    },
+                  }}
+                >
+                  <ArrowBackRounded />
+                </IconButton>
+              </Tooltip>
+              <Typography
+                variant='h4'
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: '1.5rem', sm: '2rem' },
+                  flexGrow: 1,
+                }}
+              >
+                {contact.name}
+              </Typography>
+            </Box>
 
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255,255,255,0.15)',
+                padding: { xs: '12px 16px', sm: '16px 20px' },
+                borderRadius: 3,
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <Box>
+                <Typography
+                  variant='body2'
+                  sx={{ opacity: 0.9, fontSize: '0.85rem', mb: 0.5 }}
+                >
+                  {total < 0
+                    ? 'You owe'
+                    : total > 0
+                    ? 'You will get'
+                    : 'All Settled Up'}
+                </Typography>
+                <Typography
+                  variant='h5'
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                  }}
+                >
+                  {formatCurrency(total)}
+                </Typography>
+              </Box>
+              <Chip
+                label={`${contact.transactions.length} Transaction${
+                  contact.transactions.length === 1 ? '' : 's'
+                }`}
+                sx={{
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  color: 'white',
+                  fontWeight: 600,
+                  height: 32,
+                  fontSize: '0.85rem',
+                }}
+              />
+            </Box>
+          </Stack>
+        </Box>
+
+        {contact.transactions.length === 0 ? (
+          <Box
+            sx={{
+              padding: { xs: '48px 16px', sm: '64px 24px' },
+              textAlign: 'center',
+              color: 'text.secondary',
+            }}
+          >
+            <Typography
+              variant='h6'
+              gutterBottom
+              sx={{ fontWeight: 600, color: 'text.primary' }}
+            >
+              No transactions yet
+            </Typography>
+            <Typography variant='body2' color='textSecondary'>
+              Start by adding a transaction using the buttons below
+            </Typography>
+          </Box>
+        ) : (
+          <List
+            sx={{
+              padding: 0,
+              marginBottom: '100px',
+            }}
+          >
             {contact.transactions.map((txn, index) => (
               <TransactionCard
                 key={index}
@@ -220,65 +270,95 @@ const TransactionView = (props) => {
                 onEdit={onEdit}
               />
             ))}
-          </Paper>
-        </Grid>
-        <Grid item>
-          <Grid container>
-            <Grid item xs={6} sm={6} md={6}>
-              <Fab
-                size="medium"
-                variant="extended"
-                color="secondary"
-                className={classes.giveButton}
-                onClick={handleOpenGive}
-              >
-                <ArrowUpwardRoundedIcon className={classes.extendedIcon} />
-                Give
-              </Fab>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <Fab
-                size="medium"
-                variant="extended"
-                color="primary"
-                className={classes.takeButton}
-                onClick={handleOpenTake}
-              >
-                <ArrowDownwardRoundedIcon className={classes.extendedIcon} />
-                Take
-              </Fab>
-            </Grid>
-          </Grid>
-          <AddExpense
-            isAdd={!txnId}
-            open={openGive}
-            handleClose={handleCloseGive}
-            itemName={itemName}
-            setItemName={setItemName}
-            value={value}
-            setValue={setValue}
-            nameErrorText={nameErrorText}
-            setNameErrorText={setNameErrorText}
-            valueErrorText={valueErrorText}
-            setValueErrorText={setValueErrorText}
-            handleSaveItem={handleSaveItemGive}
-          />
-          <AddExpense
-            isAdd={!txnId}
-            open={openTake}
-            handleClose={handleCloseTake}
-            itemName={itemName}
-            setItemName={setItemName}
-            value={value}
-            setValue={setValue}
-            nameErrorText={nameErrorText}
-            setNameErrorText={setNameErrorText}
-            valueErrorText={valueErrorText}
-            setValueErrorText={setValueErrorText}
-            handleSaveItem={handleSaveItemTake}
-          />
-        </Grid>
-      </Grid>
+          </List>
+        )}
+
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: '16px',
+            backgroundColor: 'white',
+            boxShadow: '0 -4px 20px rgba(0,0,0,0.08)',
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <Fab
+            variant='extended'
+            color='primary'
+            onClick={handleOpenGive}
+            sx={{
+              flex: { xs: 1, sm: 'none' },
+              minWidth: { sm: 140 },
+              maxWidth: { xs: 200 },
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              '&:hover': {
+                boxShadow: '0 6px 16px rgba(102, 126, 234, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+            }}
+          >
+            <ArrowUpwardRoundedIcon sx={{ marginRight: 1 }} />
+            You Give
+          </Fab>
+          <Fab
+            variant='extended'
+            color='secondary'
+            onClick={handleOpenTake}
+            sx={{
+              flex: { xs: 1, sm: 'none' },
+              minWidth: { sm: 140 },
+              maxWidth: { xs: 200 },
+              boxShadow: '0 4px 12px rgba(156, 39, 176, 0.3)',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              '&:hover': {
+                boxShadow: '0 6px 16px rgba(156, 39, 176, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+            }}
+          >
+            <ArrowDownwardRoundedIcon sx={{ marginRight: 1 }} />
+            You Get
+          </Fab>
+        </Box>
+
+        <AddExpense
+          isAdd={!txnId}
+          open={openGive}
+          handleClose={handleCloseGive}
+          itemName={itemName}
+          setItemName={setItemName}
+          value={value}
+          setValue={setValue}
+          nameErrorText={nameErrorText}
+          setNameErrorText={setNameErrorText}
+          valueErrorText={valueErrorText}
+          setValueErrorText={setValueErrorText}
+          handleSaveItem={handleSaveItemGive}
+        />
+        <AddExpense
+          isAdd={!txnId}
+          open={openTake}
+          handleClose={handleCloseTake}
+          itemName={itemName}
+          setItemName={setItemName}
+          value={value}
+          setValue={setValue}
+          nameErrorText={nameErrorText}
+          setNameErrorText={setNameErrorText}
+          valueErrorText={valueErrorText}
+          setValueErrorText={setValueErrorText}
+          handleSaveItem={handleSaveItemTake}
+        />
+      </AppContainer>
     </Page>
   );
 };

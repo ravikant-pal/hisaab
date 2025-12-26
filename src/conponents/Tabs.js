@@ -1,40 +1,49 @@
-import React from 'react';
-import { NavLink as RouterLink } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import EventNoteIcon from '@material-ui/icons/EventNote';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
+import {
+  EventNote as EventNoteIcon,
+  PersonPin as PersonPinIcon,
+} from '@mui/icons-material';
+import { Paper, Tab, Tabs } from '@mui/material';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 
 const IconLabelTabs = (props) => {
-  const classes = useStyles();
-  const { month: daily } = props;
-  const [value, setValue] = React.useState(daily ? 1 : 0);
+  const location = useLocation();
+  const value = location.pathname.includes('/daily') ? 1 : 0;
 
   return (
-    <Paper square className={classes.root}>
+    <Paper
+      square
+      elevation={0}
+      sx={{
+        flexGrow: 1,
+        backgroundColor: 'transparent',
+        borderBottom: '1px solid rgba(0,0,0,0.08)',
+      }}
+    >
       <Tabs
         value={value}
-        onChange={(e, newValue) => setValue(newValue)}
         indicatorColor='secondary'
         textColor='primary'
-        centered>
+        centered
+        sx={{
+          '& .MuiTab-root': {
+            minHeight: 64,
+            fontSize: '0.95rem',
+            fontWeight: 500,
+            textTransform: 'capitalize',
+          },
+        }}
+      >
         <Tab
           icon={<PersonPinIcon />}
+          iconPosition='start'
           label='Friends'
           component={RouterLink}
           to='/hisaab/contacts'
         />
         <Tab
           icon={<EventNoteIcon />}
-          label='daily'
+          iconPosition='start'
+          label='Daily'
           component={RouterLink}
           to='/hisaab/daily'
         />
